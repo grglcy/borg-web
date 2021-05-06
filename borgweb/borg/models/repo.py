@@ -1,5 +1,7 @@
 from django.db import models
-from datetime import datetime
+from datetime import datetime, timedelta
+from ..utility.time import seconds_to_string
+from ..utility.data import bytes_to_string
 
 
 class Repo(models.Model):
@@ -11,43 +13,24 @@ class Repo(models.Model):
         db_table = 'repo'
 
     def last_backup(self):
-        latest = self.archives.order_by('-start')[0].start.replace(tzinfo=None)
+        latest = self.latest_archive().start.replace(tzinfo=None)
         seconds_since = int((datetime.utcnow() - latest).total_seconds())
-        return f"{self.seconds_to_string(seconds_since)} ago"
+        return f"{seconds_to_string(seconds_since, False, True)} ago"
 
-    @staticmethod
-    def seconds_to_string(seconds: int, short=False, truncate=False):
-        seconds = int(seconds)
-        increments = [('year', 'yr', 31557600),
-                      ('week', 'wk', 604800),
-                      ('day', 'day', 86400),
-                      ('hour', 'hr', 3600),
-                      ('minute', 'min', 60),
-                      ('second', 'sec', 1)]
+    def latest_archive(self):
+        return self.archives.order_by('-start')[0]
 
-        if seconds == 0:
-            if short:
-                return f"0 {increments[-1][1]}s"
-            else:
-                return f"0 {increments[-1][0]}s"
+    def size(self):
+        cache = self.latest_archive().cache
+        size = bytes_to_string(cache.unique_size)
+        csize = bytes_to_string(cache.unique_csize)
+        return f"{size}/{csize}"
 
-        time_string = ""
-
-        remainder = seconds
-        for st, sst, s in increments:
-            if remainder == 0:
-                break
-            if short:
-                st = sst
-            if remainder < s or remainder == 0:
-                continue
-            else:
-                exact, remainder = divmod(remainder, s)
-                if exact > 1:
-                    time_string += f"{exact} {st}s, "
-                else:
-                    time_string += f"{exact} {st}, "
-                if truncate:
-                    break
-        return time_string.strip().strip(',')[::-1].replace(' ,', ' dna ', 1)[::-1]  # lmao
-
+    def recent_errors(self):
+        days = 7
+        days_ago = (datetime.utcnow() - timedelta(days=7))
+        errors = self.label.errors.all().filter(time__gt=days_ago)
+        if len(errors) == 1:
+            return f"1 error since {days} days ago"
+        else:
+            return f"{len(errors)} errors since {days} days ago"
