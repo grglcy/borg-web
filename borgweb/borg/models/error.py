@@ -3,7 +3,7 @@ from . import Label
 
 
 class Error(models.Model):
-    label_id = models.ForeignKey(Label, on_delete=models.CASCADE)
+    label = models.ForeignKey(Label, on_delete=models.CASCADE, related_name='errors')
     error = models.TextField()
     time = models.DateTimeField()
 
