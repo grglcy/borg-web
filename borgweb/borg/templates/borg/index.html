@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% if repo_list %}
+        {% for repo in repo_list %}
+            <div>
+                    <header>{{ repo.label }} ({{ repo.location }}) </header>
+                <ul>
+                    <li>Latest backup: {{ repo.last_backup }}</li>
+                    <li>Un/Compressed size: {{ repo.size }}</li>
+                    <li>{{ repo.recent_errors }}</li>
+                </ul>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No repos found.</p>
+    {% endif %}
+
+</head>
+<body>
+
+</body>
+</html>
