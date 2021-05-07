@@ -1,10 +1,10 @@
 from django.db import models
-from . import Repo
+from . import Repo, Cache
 
 
 class Archive(models.Model):
-    fingerprint = models.TextField()
-    repo = models.ForeignKey(Repo, on_delete=models.CASCADE, related_name='archives')
+    fingerprint = models.TextField(unique=True)
+    repo = models.ForeignKey(Repo, on_delete=models.CASCADE)
     name = models.TextField()
     start = models.DateTimeField()
     end = models.DateTimeField()
@@ -12,4 +12,5 @@ class Archive(models.Model):
     original_size = models.IntegerField()
     compressed_size = models.IntegerField()
     deduplicated_size = models.IntegerField()
+    cache = models.OneToOneField(Cache, on_delete=models.CASCADE)
 
