@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from .models import Repo, Label, Archive, Cache, Error
 from django.urls import reverse
 from .forms import RepoForm, ArchiveForm, ErrorForm
+from django.contrib.auth.decorators import permission_required
 
 
 def index(request):
@@ -17,6 +18,7 @@ def index(request):
     return render(request, 'borg/index.html', context)
 
 
+@permission_required("borg.add_repo")
 def get_repo(request):
     if request.method == 'POST':
         form = RepoForm(request.POST)
@@ -44,6 +46,7 @@ def get_repo(request):
     return render(request, 'borg/repo.html', {'form': form})
 
 
+@permission_required("borg.add_archive")
 def get_archive(request):
     if request.method == 'POST':
         form = ArchiveForm(request.POST)
@@ -71,6 +74,7 @@ def get_archive(request):
     return render(request, 'borg/archive.html', {'form': form})
 
 
+@permission_required("borg.add_error")
 def get_error(request):
     if request.method == 'POST':
         form = ErrorForm(request.POST)
