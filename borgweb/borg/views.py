@@ -1,9 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 
-from .models import Repo, Label, Archive, Cache
+from .models import Repo, Label, Archive, Cache, Error
 from django.urls import reverse
-from .forms import RepoForm, ArchiveForm
+from .forms import RepoForm, ArchiveForm, ErrorForm
 
 
 def index(request):
@@ -69,3 +69,20 @@ def get_archive(request):
         form = ArchiveForm()
 
     return render(request, 'borg/archive.html', {'form': form})
+
+
+def get_error(request):
+    if request.method == 'POST':
+        form = ErrorForm(request.POST)
+        if form.is_valid():
+            cdata = form.cleaned_data
+            label, _ = Label.objects.get_or_create(label=cdata['label'])
+
+            error = Error(label=label, error=cdata['error'], time=cdata['time'])
+            error.save()
+
+            return HttpResponseRedirect(reverse('index'))
+    else:
+        form = ErrorForm()
+
+    return render(request, 'borg/error.html', {'form': form})
