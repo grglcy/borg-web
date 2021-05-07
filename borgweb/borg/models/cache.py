@@ -10,6 +10,3 @@ class Cache(models.Model):
     total_unique_chunks = models.IntegerField()
     unique_csize = models.IntegerField()
     unique_size = models.IntegerField()
-
-    class Meta:
-        db_table = 'cache'

@@ -13,5 +13,3 @@ class Archive(models.Model):
     compressed_size = models.IntegerField()
     deduplicated_size = models.IntegerField()
 
-    class Meta:
-        db_table = 'archive'

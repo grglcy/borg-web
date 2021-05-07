@@ -2,15 +2,14 @@ from django.db import models
 from datetime import datetime, timedelta
 from ..utility.time import seconds_to_string
 from ..utility.data import bytes_to_string
+from . import Label
 
 
 class Repo(models.Model):
-    fingerprint = models.TextField()
+    fingerprint = models.TextField(unique=True)
     location = models.TextField()
     last_modified = models.DateTimeField()
-
-    class Meta:
-        db_table = 'repo'
+    label = models.OneToOneField(Label, on_delete=models.CASCADE, unique=True)
 
     def last_backup(self):
         latest = self.latest_archive().start.replace(tzinfo=None)
