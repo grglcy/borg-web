@@ -1,9 +1,9 @@
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotAllowed
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseRedirect
 
-from .models import Repo, Label
+from .models import Repo, Label, Archive, Cache
 from django.urls import reverse
-from .forms import RepoForm
+from .forms import RepoForm, ArchiveForm
 
 
 def index(request):
@@ -42,3 +42,30 @@ def get_repo(request):
         form = RepoForm()
 
     return render(request, 'borg/repo.html', {'form': form})
+
+
+def get_archive(request):
+    if request.method == 'POST':
+        form = ArchiveForm(request.POST)
+        if form.is_valid():
+            cdata = form.cleaned_data
+
+            repo = get_object_or_404(Repo, label__label=cdata['label'])
+
+            cache_dict = {k: cdata[k] for k in ('total_chunks', 'total_csize', 'total_size',
+                                                'total_unique_chunks', 'unique_csize', 'unique_size')}
+
+            cache = Cache(**cache_dict)
+            cache.save()
+
+            archive_dict = {k: cdata[k] for k in ('fingerprint', 'name', 'start', 'end', 'file_count',
+                                                  'original_size', 'compressed_size', 'deduplicated_size')}
+
+            archive = Archive(**archive_dict, repo=repo, cache=cache)
+            archive.save()
+
+            return HttpResponseRedirect(reverse('index'))
+    else:
+        form = ArchiveForm()
+
+    return render(request, 'borg/archive.html', {'form': form})
