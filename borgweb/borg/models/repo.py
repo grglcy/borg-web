@@ -22,9 +22,7 @@ class Repo(models.Model):
 
     def size(self):
         cache = self.latest_archive().cache
-        size = bytes_to_string(cache.unique_size)
-        csize = bytes_to_string(cache.unique_csize)
-        return f"{size}/{csize}"
+        return f"{bytes_to_string(cache.unique_csize)}"
 
     def recent_errors(self):
         days = 7
@@ -34,3 +32,35 @@ class Repo(models.Model):
             return f"1 error since {days} days ago"
         else:
             return f"{len(errors)} errors since {days} days ago"
+
+    def archive_dates(self):
+        days = self.get_archive_days()
+
+    def get_archive_days(self):
+        current_day = datetime.utcnow().day
+        days = []
+        for day in reversed(range(1, 31)):
+            try:
+                cday = datetime.utcnow().replace(day=day)
+            except ValueError:
+                continue
+            if day > current_day:
+                days.append(False)
+            else:
+                cday_archives = self.archives.all().filter(start__date=cday)
+                days.append(len(cday_archives) > 0)
+        return days
+
+    def get_archive_hours_dict(self):
+        return {"id": self.id,
+                "label": self.label.label,
+                "hours": self.get_archive_hours()}
+
+    def get_archive_hours(self):
+        hours = []
+        for hour in range(24):
+            chour = datetime.utcnow() - timedelta(hours=hour)
+            cday_archives = self.archives.all().filter(start__date=chour.date()).filter(start__hour=chour.hour)
+            hours.append(len(cday_archives) > 0)
+        hours = ''.join(['H' if hour is True else '-' for hour in hours])
+        return hours

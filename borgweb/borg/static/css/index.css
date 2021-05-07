@@ -1,0 +1,19 @@
+.repo_info {
+    outline: 2px solid black;
+    padding: 8px;
+    float: left;
+    width: auto;
+    margin: 16px;
+}
+
+.repo_label {
+    font-size: x-large;
+}
+
+.repo_point {
+    list-style-type: none;
+}
+
+.point_label {
+    font-weight: bold;
+}

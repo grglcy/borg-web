@@ -2,24 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    {% if repo_list %}
+    <title>Borg Summary</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+    {{ hour_list|json_script:"hour_list" }}
+    <script src="{% static 'js/index.js' %}"></script>
+</head>
+<body>
+<p id="hours"></p>
+{% if repo_list %}
         {% for repo in repo_list %}
-            <div>
-                    <header>{{ repo.label }} ({{ repo.location }}) </header>
-                <ul>
-                    <li>Latest backup: {{ repo.last_backup }}</li>
-                    <li>Un/Compressed size: {{ repo.size }}</li>
-                    <li>{{ repo.recent_errors }}</li>
+            <div class="repo_info">
+                    <header class="repo_label">{{ repo.label }} ({{ repo.location }}) </header>
+                <ul class="repo_details">
+                    <li class="repo_point"><span class="point_label">Latest backup:</span> {{ repo.last_backup }}</li>
+                    <li class="repo_point"><span class="point_label">Hourly backups:</span> {{ repo.get_archive_hours }}</li>
+                    <li class="repo_point"><span class="point_label">Size:</span> {{ repo.size }}</li>
+                    <li class="repo_point"><span class="point_label">{{ repo.recent_errors }}</span></li>
                 </ul>
             </div>
         {% endfor %}
+        <canvas id="daily_backup_graphic" width="200" height="100"></canvas>
     {% else %}
         <p>No repos found.</p>
     {% endif %}
-
-</head>
-<body>
-
 </body>
 </html>
