@@ -1,9 +1,9 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotAllowed
 
-from .models import Repo
-from .forms import RepoForm
+from .models import Repo, Label
 from django.urls import reverse
+from .forms import RepoForm
 
 
 def index(request):
@@ -13,23 +13,31 @@ def index(request):
     context = {
         'repo_list': repo_list,
         'hour_list': hour_list
-        }
+    }
     return render(request, 'borg/index.html', context)
 
 
 def get_repo(request):
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
         form = RepoForm(request.POST)
-        # check whether it's valid:
         if form.is_valid():
-            print(form.cleaned_data)
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-            return HttpResponseRedirect(reverse('index'))
+            cdata = form.cleaned_data
 
-        # if a GET (or any other method) we'll create a blank form
+            repo_query = Repo.objects.all().filter(fingerprint=cdata['fingerprint'])
+            if len(repo_query) > 0:
+                label = repo_query[0].label
+                label.label = cdata['label']
+                label.save()
+
+            label, _ = Label.objects.get_or_create(label=cdata['label'])
+            label.save()
+            repo, repo_exists = Repo.objects.update_or_create(fingerprint=cdata['fingerprint'],
+                                                              defaults={'location': cdata['location'],
+                                                                        'last_modified': cdata['last_modified'],
+                                                                        'label': label})
+            repo.save()
+
+            return HttpResponseRedirect(reverse('index'))
     else:
         form = RepoForm()
 
