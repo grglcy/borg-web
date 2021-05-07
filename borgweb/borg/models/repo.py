@@ -12,16 +12,22 @@ class Repo(models.Model):
     label = models.OneToOneField(Label, on_delete=models.CASCADE, unique=True)
 
     def last_backup(self):
-        latest = self.latest_archive().start.replace(tzinfo=None)
-        seconds_since = int((datetime.utcnow() - latest).total_seconds())
-        return f"{seconds_to_string(seconds_since, False, True)} ago"
+        if self.archives.all().exists():
+            latest = self.latest_archive().start.replace(tzinfo=None)
+            seconds_since = int((datetime.utcnow() - latest).total_seconds())
+            return f"{seconds_to_string(seconds_since, False, True)} ago"
+        else:
+            return "No archives stored"
 
     def latest_archive(self):
         return self.archives.order_by('-start')[0]
 
     def size(self):
-        cache = self.latest_archive().cache
-        return f"{bytes_to_string(cache.unique_csize)}"
+        if self.archives.all().exists():
+            cache = self.latest_archive().cache
+            return f"{bytes_to_string(cache.unique_csize)}"
+        else:
+            return "No archives stored"
 
     def recent_errors(self):
         days = 7
