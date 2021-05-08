@@ -4,8 +4,8 @@ Supersedes my previous project [borg-manager](https://github.com/georgelacey/bor
 
 ## Summary
 Borg web consists of two components, a client 'borg-client' and [Django](https://www.djangoproject.com/) web server 'borgweb',
-json output from borg create is piped to the client, which sends it to the web server.
-If no json is output, an error is assumed, which is then logged.
+when json output from borg create is piped to the client, it is sent to the web server.
+If no json is output an error is assumed, which is then logged.
 
 ## Features:
 * Parses json output from 'borg create --json'
