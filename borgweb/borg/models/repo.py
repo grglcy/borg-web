@@ -31,9 +31,9 @@ class Repo(models.Model):
 
     def recent_errors(self):
         days = 7
-        days_ago = (datetime.utcnow() - timedelta(days=7))
+        days_ago = (datetime.utcnow() - timedelta(days=days))
         errors = self.label.errors.all().filter(time__gt=days_ago)
-        return len(errors)
+        return errors
 
     def archive_dates(self):
         days = self.get_archive_days()

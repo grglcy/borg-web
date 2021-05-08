@@ -17,7 +17,7 @@
 <p id="hours"></p>
 {% if repo_list %}
         {% for repo in repo_list %}
-            <div class="col-md-4 rounded float-md-left">
+            <div class="col-md-4 rounded float-xl-left">
                 <h3 class="repo_label">{{ repo.label }}<small class="text-muted"> {{ repo.location }}</small></h3>
                 <dl class="row">
                     <dt class="col-sm-3">Latest backup:</dt>
@@ -31,9 +31,16 @@
                     <dt class="col-sm-3">Size:</dt>
                     <dd class="col-sm-9">{{ repo.size }}</dd>
                 </dl>
+                {% if repo.recent_errors|length > 0 %}
                 <dl class="row">
-                    <dt class="col-sm-3">Recent errors:</dt>
-                    <dd class="col-sm-9"><span class="badge badge-pill badge-secondary pull-right">{{ repo.recent_errors }}</span></dd>
+                    <dt class="col-sm-9 h4">Recent errors:</dt>
+                </dl>
+                {% endif %}
+                <dl class="row">
+                {% for error in repo.recent_errors %}
+                    <dt class="col-sm-4">{{ error.time|date:'d-m-Y H:i' }}</dt>
+                    <dd class="col-sm-8 text-truncate">{{ error.error }}</dd>
+                {% endfor %}
                 </dl>
             </div>
         {% endfor %}
