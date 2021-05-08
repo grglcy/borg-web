@@ -1,3 +1,12 @@
+from datetime import datetime
+
+
+def time_ago(time: datetime, short=False, truncate=False):
+    seconds = int((datetime.utcnow() - time).total_seconds())
+
+    return seconds_to_string(seconds, short=short, truncate=truncate)
+
+
 def seconds_to_string(seconds: int, short=False, truncate=False):
     seconds = int(seconds)
     increments = [('year', 'yr', 31557600),

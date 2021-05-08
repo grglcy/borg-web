@@ -36,9 +36,9 @@
                     <dt class="col-sm-9 h4">Recent errors:</dt>
                 </dl>
                 {% endif %}
-                <dl class="row">
+                <dl class="row ml-1">
                 {% for error in repo.recent_errors %}
-                    <dt class="col-sm-4">{{ error.time|date:'d-m-Y H:i' }}</dt>
+                    <dt class="col-sm-4">{{ error.time_ago }}</dt>
                     <dd class="col-sm-8 text-truncate">{{ error.error }}</dd>
                 {% endfor %}
                 </dl>
