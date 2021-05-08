@@ -33,10 +33,7 @@ class Repo(models.Model):
         days = 7
         days_ago = (datetime.utcnow() - timedelta(days=7))
         errors = self.label.errors.all().filter(time__gt=days_ago)
-        if len(errors) == 1:
-            return f"1 error since {days} days ago"
-        else:
-            return f"{len(errors)} errors since {days} days ago"
+        return len(errors)
 
     def archive_dates(self):
         days = self.get_archive_days()

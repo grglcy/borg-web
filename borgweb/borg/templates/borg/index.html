@@ -1,26 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Borg Summary</title>
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+
     {{ hour_list|json_script:"hour_list" }}
 </head>
 <body>
 <p id="hours"></p>
 {% if repo_list %}
         {% for repo in repo_list %}
-            <div class="repo_info">
-                    <header class="repo_label">{{ repo.label }} ({{ repo.location }}) </header>
-                <ul class="repo_details">
-                    <li class="repo_point"><span class="point_label">Latest backup:</span> {{ repo.last_backup }}</li>
-                    <li class="repo_point"><span class="point_label">Hourly backups:</span> {{ repo.get_archive_hours }}</li>
-                    <li class="repo_point"><span class="point_label">Size:</span> {{ repo.size }}</li>
-                    <li class="repo_point"><span class="point_label">{{ repo.recent_errors }}</span></li>
-                </ul>
+            <div class="col-md-4 border rounded float-md-left">
+                <h3 class="repo_label">{{ repo.label }}<small class="text-muted"> {{ repo.location }}</small></h3>
+                <dl class="row">
+                    <dt class="col-sm-3">Latest backup:</dt>
+                    <dd class="col-sm-9">{{ repo.last_backup }}</dd>
+                </dl>
+                <dl class="row">
+                    <dt class="col-sm-3">Hourly backups:</dt>
+                    <dd class="col-sm-9">{{ repo.get_archive_hours }}</dd>
+                </dl>
+                <dl class="row">
+                    <dt class="col-sm-3">Size:</dt>
+                    <dd class="col-sm-9">{{ repo.size }}</dd>
+                </dl>
+                <dl class="row">
+                    <dt class="col-sm-3">Recent errors:</dt>
+                    <dd class="col-sm-9"><span class="badge badge-pill badge-secondary pull-right">{{ repo.recent_errors }}</span></dd>
+                </dl>
             </div>
         {% endfor %}
         <canvas id="daily_backup_graphic" width="200" height="100"></canvas>
