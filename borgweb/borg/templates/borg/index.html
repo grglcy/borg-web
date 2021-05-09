@@ -4,20 +4,26 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Borg Summary</title>
+
     {% load static %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
-
     {{ hour_list|json_script:"hour_list" }}
+    <script src="{% static 'js/index.js' %}"></script>
 </head>
 <body>
 <p id="hours"></p>
 {% if repo_list %}
         {% for repo in repo_list %}
-            <div class="col-md-4 rounded float-xl-left">
+            {% if repo.archive_after_latest_error %}
+            <div class="col-md-4 rounded float-xl-left bg-success">
+            {% else %}
+            <div class="col-md-4 rounded float-xl-left bg-danger">
+            {% endif %}
                 <h3 class="repo_label">{{ repo.label }}<small class="text-muted"> {{ repo.location }}</small></h3>
                 <dl class="row">
                     <dt class="col-sm-3">Latest backup:</dt>
@@ -44,9 +50,11 @@
                 </dl>
             </div>
         {% endfor %}
-        <canvas id="daily_backup_graphic" width="200" height="100"></canvas>
     {% else %}
         <p>No repos found.</p>
     {% endif %}
+<div class="col-md-4 rounded float-xl-left">
+  <canvas id="myChart"></canvas>
+</div>
 </body>
 </html>

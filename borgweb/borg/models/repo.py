@@ -11,6 +11,16 @@ class Repo(models.Model):
     last_modified = models.DateTimeField()
     label = models.OneToOneField(Label, on_delete=models.CASCADE, unique=True)
 
+    def archive_after_latest_error(self):
+        latest_archive = self.latest_archive()
+        latest_error = self.latest_error()
+        if latest_archive is None:
+            return False
+        elif latest_error is None:
+            return True
+        else:
+            return latest_archive.start > latest_error.time
+
     def last_backup(self):
         if self.archive_set.all().exists():
             latest = self.latest_archive().start.replace(tzinfo=None)
@@ -20,7 +30,18 @@ class Repo(models.Model):
             return "No archives stored"
 
     def latest_archive(self):
-        return self.archive_set.order_by('-start')[0]
+        archives = self.archive_set.order_by('-start')
+        if len(archives) > 0:
+            return archives[0]
+        else:
+            return None
+
+    def latest_error(self):
+        errors = self.label.errors.all().order_by('-time')
+        if len(errors) > 0:
+            return errors[0]
+        else:
+            return None
 
     def size(self):
         if self.archive_set.all().exists():
@@ -34,9 +55,6 @@ class Repo(models.Model):
         days_ago = (datetime.utcnow() - timedelta(days=days))
         errors = self.label.errors.all().filter(time__gt=days_ago)
         return errors
-
-    def archive_dates(self):
-        days = self.get_archive_days()
 
     def get_archive_days(self):
         current_day = datetime.utcnow().day
