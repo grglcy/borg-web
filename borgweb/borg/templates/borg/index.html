@@ -20,9 +20,9 @@
 {% if repo_list %}
         {% for repo in repo_list %}
             {% if repo.archive_after_latest_error %}
-            <div class="col-md-4 rounded float-xl-left bg-success">
+                <div class="col-md-4 rounded float-xl-left bg-success">
             {% else %}
-            <div class="col-md-4 rounded float-xl-left bg-danger">
+                <div class="col-md-4 rounded float-xl-left bg-danger">
             {% endif %}
                 <h3 class="repo_label">{{ repo.label }}<small class="text-muted"> {{ repo.location }}</small></h3>
                 <dl class="row">
@@ -53,8 +53,6 @@
     {% else %}
         <p>No repos found.</p>
     {% endif %}
-<div class="col-md-4 rounded float-xl-left">
-  <canvas id="myChart"></canvas>
 </div>
 </body>
 </html>
