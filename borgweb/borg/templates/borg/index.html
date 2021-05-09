@@ -31,11 +31,11 @@
                 </dl>
                 <dl class="row">
                     <dt class="col-sm-3">Hourly backups:</dt>
-                    <dd class="col-sm-9">{{ repo.get_archive_hours }}</dd>
+                    <dd class="col-sm-9">{{ repo.hourly_archive_string }}</dd>
                 </dl>
                 <dl class="row">
                     <dt class="col-sm-3">Size:</dt>
-                    <dd class="col-sm-9">{{ repo.size }}</dd>
+                    <dd class="col-sm-9">{{ repo.size_string }}</dd>
                 </dl>
                 {% if repo.recent_errors|length > 0 %}
                 <dl class="row">
@@ -53,6 +53,9 @@
     {% else %}
         <p>No repos found.</p>
     {% endif %}
+    <div class="col-md-4 rounded float-xl-left">
+    <canvas id="backup_csize_hourly" width="200" height="100"></canvas>
+    </div>
 </div>
 </body>
 </html>

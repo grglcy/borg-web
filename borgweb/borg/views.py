@@ -5,17 +5,34 @@ from .models import Repo, Label, Archive, Cache, Error
 from django.urls import reverse
 from .forms import RepoForm, ArchiveForm, ErrorForm
 from django.contrib.auth.decorators import permission_required
+from .utility import data
+from datetime import datetime, timedelta
 
 
 def index(request):
     repo_list = Repo.objects.all()
 
-    hour_list = [repo.get_archive_hours_dict() for repo in repo_list]
+    repo_dict = repo_daily_dict(repo_list, 24)
+
     context = {
         'repo_list': repo_list,
-        'hour_list': hour_list
+        'hour_list': repo_dict
     }
     return render(request, 'borg/index.html', context)
+
+
+def repo_daily_dict(repo_list, n_days=14):
+    date_labels = list(reversed([(datetime.utcnow() - timedelta(days=day)).strftime("%d %b") for day in range(n_days)]))
+    max_repo_size = max(repo.latest_archive().cache.unique_csize for repo in repo_list)
+    _, max_unit = data.convert_bytes(max_repo_size)
+
+    repo_dicts = [repo.daily_dict(max_unit, n_days) for repo in repo_list]
+
+    return {
+        "date_labels": date_labels,
+        "repos": repo_dicts,
+        "units": max_unit
+    }
 
 
 @permission_required("borg.add_repo")

@@ -1,7 +1,46 @@
 window.addEventListener("DOMContentLoaded", function () {
-
-    const hour_json = JSON.parse(document.getElementById('hour_list').textContent);
-    hour_json.forEach(function (repo) {
-        console.log(repo.hours);
-    })
+    const repoDict = JSON.parse(document.getElementById('hour_list').textContent);
+    set_daily_graph(repoDict)
 }, false);
+
+function set_daily_graph(repoDict) {
+    const labels = repoDict.date_labels;
+    const y_units = repoDict.units
+
+    var datasets = []
+    repoDict.repos.forEach(function (repo) {
+        datasets.push({label: repo.label,
+            data: repo.daily_size,
+            fill: false,
+            tension: 0.1,
+            borderColor: 'rgb(75, 192, 192)'});
+    })
+
+    const data = {
+      labels: labels,
+      datasets: datasets
+    };
+
+    const config = {
+        type: 'line',
+        data,
+        options: {
+            scales: {
+            y: {
+                ticks: {
+                    display: true,
+                    grid: false,
+                    callback: function(value, index, values) {
+                        return  value + " " + y_units;
+                    }
+                }
+            }
+        }
+        }
+    };
+
+    var myChart = new Chart(
+        document.getElementById('backup_csize_hourly'),
+        config
+    );
+}

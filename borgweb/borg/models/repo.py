@@ -1,7 +1,7 @@
 from django.db import models
 from datetime import datetime, timedelta
 from ..utility.time import seconds_to_string
-from ..utility.data import bytes_to_string
+from ..utility.data import bytes_to_string, convert_bytes
 from . import Label
 
 
@@ -46,12 +46,15 @@ class Repo(models.Model):
     def size(self):
         if self.archive_set.all().exists():
             cache = self.latest_archive().cache
-            return f"{bytes_to_string(cache.unique_csize)}"
+            return cache.unique_csize
         else:
-            return "No archives stored"
+            return 0
 
-    def recent_errors(self):
-        days = 7
+    def size_string(self):
+        size = self.size()
+        return bytes_to_string(size)
+
+    def recent_errors(self, days: int = 7):
         days_ago = (datetime.utcnow() - timedelta(days=days))
         errors = self.label.errors.all().filter(time__gt=days_ago)
         return errors
@@ -71,21 +74,57 @@ class Repo(models.Model):
                 days.append(len(cday_archives) > 0)
         return days
 
-    def get_archive_hours_dict(self):
-        if self.archive_set.all().exists():
-            return {"id": self.id,
-                    "label": self.label.label,
-                    "hours": self.get_archive_hours()}
-        else:
-            return {"id": self.id,
-                    "label": self.label.label,
-                    "hours": []}
+    def daily_dict(self, units, n_hours: int = 24):
+        archives = self.daily_archives(n_hours)
+        return {
+            "id": self.id,
+            "label": self.label.label,
+            "daily_size": list(reversed(self.series_csize(archives, units)))
+        }
 
-    def get_archive_hours(self):
-        hours = []
-        for hour in range(24):
-            chour = datetime.utcnow() - timedelta(hours=hour)
-            cday_archives = self.archive_set.all().filter(start__date=chour.date()).filter(start__hour=chour.hour)
-            hours.append(len(cday_archives) > 0)
-        hours = ''.join(['H' if hour is True else '-' for hour in hours])
-        return hours
+    @staticmethod
+    def series_times(archives):
+        return [archive.start if archive is not None else None for archive in archives]
+
+    @staticmethod
+    def series_csize(archives, units=None):
+        return [convert_bytes(archive.cache.unique_csize, units)[0]
+                if archive is not None else None for archive in archives]
+
+    @staticmethod
+    def series_csize_pretty(archives):
+        return [archive.cache.unique_csize if archive is not None else None for archive in archives]
+
+    @staticmethod
+    def series_success_string(archives):
+        return ''.join(['H' if archive is not None else '-' for archive in archives])
+
+    def hourly_archive_string(self):
+        return ''.join(['H' if archive is not None else '-' for archive in self.hourly_archives(24)])
+
+    def daily_archives(self, n_days: int = 24):
+        archives = []
+        for day in range(n_days):
+            current_date = (datetime.utcnow() - timedelta(days=day)).date()
+            archive_current_date = self.archive_set.all()\
+                .filter(start__date=current_date)\
+                .order_by('-start')
+            if len(archive_current_date) > 0:
+                archives.append(archive_current_date[0])
+            else:
+                archives.append(None)
+        return archives
+
+    def hourly_archives(self, n_hours: int = 24):
+        archives = []
+        for hour in range(n_hours):
+            current_hour = datetime.utcnow() - timedelta(hours=hour)
+            archives_hour = self.archive_set.all()\
+                .filter(start__date=current_hour.date())\
+                .filter(start__hour=current_hour.hour)\
+                .order_by('-start')
+            if len(archives_hour) > 0:
+                archives.append(archives_hour[0])
+            else:
+                archives.append(None)
+        return archives
