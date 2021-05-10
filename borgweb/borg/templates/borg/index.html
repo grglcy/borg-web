@@ -25,22 +25,22 @@
 {% if repo_list %}
 <div class="container mx-auto d-flex justify-content-center flex-wrap overflow-hidden">
 {% for repo in repo_list %}
-    <div style="width: 500px;" class="rounded bg-primary
+    <div style="width: 500px;" class="shadow rounded bg-primary overflow-hidden
                 {% if not repo.archive_after_latest_error %}bg-danger{% endif %}">
         <div class="row me-1 overflow-hidden text-truncate">
         <h2>{{ repo.label }}
             <small class="text-muted"> {{ repo.location }}</small>
         </h2>
         </div>
-        <dl class="row px-3 overflow-hidden">
+        <dl class="row ps-3 overflow-hidden">
             <dt class="col-3">Latest backup:</dt>
             <dd class="col-9">{{ repo.last_backup }}</dd>
         </dl>
-        <dl class="row px-3">
+        <dl class="row ps-3 overflow-hidden" >
             <dt class="col-3">Hourly backups:</dt>
             <dd class="col-9">{{ repo.hourly_archive_string }}</dd>
         </dl>
-        <dl class="row px-3">
+        <dl class="row ps-3 overflow-hidden">
             <dt class="col-3">Size:</dt>
             <dd class="col-9">{{ repo.size_string }}</dd>
         </dl>
@@ -49,7 +49,7 @@
             <dt class="col-12 h4">Recent errors:</dt>
         </dl>
         {% endif %}
-        <dl class="row px-3">
+        <dl class="row ps-3">
             {% for error in repo.recent_errors %}
             <dt class="col-3">{{ error.time_ago }}</dt>
             <dd class="col-9 text-truncate">{{ error.error }}</dd>
@@ -57,7 +57,7 @@
         </dl>
     </div>
 {% endfor %}
-<div style="width: 500px;" class="rounded bg-primary">
+<div style="width: 500px;" class="shadow rounded bg-primary overflow-hidden">
     <canvas id="backup_csize_hourly" width="400" height="200"></canvas>
 </div>
 {% else %}
