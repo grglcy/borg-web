@@ -41,3 +41,15 @@ def seconds_to_string(seconds: int, short=False, truncate=False):
             if truncate:
                 break
     return time_string.strip().strip(',')[::-1].replace(' ,', ' dna ', 1)[::-1]
+
+
+def subtract_months(p_date: datetime, offset):
+    years, months = divmod(offset, 12)
+    new_date = p_date.replace(year=p_date.year - years)
+    offset -= years * 12
+
+    if new_date.month <= offset:
+        offset -= new_date.month
+        return new_date.replace(month=12 - offset, year=new_date.year - 1)
+    else:
+        return new_date.replace(month=new_date.month - months)
