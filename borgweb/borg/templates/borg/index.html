@@ -16,33 +16,39 @@
     {{ hour_list|json_script:"hour_list" }}
     <script src="{% static 'js/index.js' %}"></script>
     <style>
-        body {
-            align: center;
+        div {
+            padding: 8px;
+            margin: 4px;
+        }
+
+        dl {
+            margin-top: 4px;
+            margin-bottom: 4px;
         }
     </style>
 </head>
 <body>
 {% if repo_list %}
-<div class="container mx-auto d-flex justify-content-center flex-wrap overflow-hidden">
-{% for repo in repo_list %}
-    <div style="width: 500px;" class="shadow rounded bg-primary overflow-hidden
+<div class="grid mx-auto d-flex justify-content-center flex-wrap">
+    {% for repo in repo_list %}
+    <div style="width: 600px;" class="shadow rounded bg-primary overflow-hidden
                 {% if not repo.archive_after_latest_error %}bg-danger{% endif %}">
         <div class="row me-1 overflow-hidden text-truncate">
-        <h2>{{ repo.label }}
-            <small class="text-muted"> {{ repo.location }}</small>
-        </h2>
+            <h2 class="h2">{{ repo.label }}
+                <small class="text-muted"> {{ repo.location }}</small>
+            </h2>
         </div>
-        <dl class="row ps-3 overflow-hidden">
-            <dt class="col-3">Latest backup:</dt>
-            <dd class="col-9">{{ repo.last_backup }}</dd>
+        <dl class="row ps-3">
+            <dt class="col-4">Latest backup:</dt>
+            <dd class="col-8">{{ repo.last_backup }}</dd>
         </dl>
-        <dl class="row ps-3 overflow-hidden" >
-            <dt class="col-3">Hourly backups:</dt>
-            <dd class="col-9">{{ repo.hourly_archive_string }}</dd>
+        <dl class="row ps-3">
+            <dt class="col-4">Hourly backups:</dt>
+            <dd class="col-8 text-truncate">{{ repo.hourly_archive_string }}</dd>
         </dl>
-        <dl class="row ps-3 overflow-hidden">
-            <dt class="col-3">Size:</dt>
-            <dd class="col-9">{{ repo.size_string }}</dd>
+        <dl class="row ps-3">
+            <dt class="col-4">Size:</dt>
+            <dd class="col-8">{{ repo.size_string }}</dd>
         </dl>
         {% if repo.recent_errors|length > 0 %}
         <dl class="row">
@@ -51,18 +57,18 @@
         {% endif %}
         <dl class="row ps-3">
             {% for error in repo.recent_errors %}
-            <dt class="col-3">{{ error.time_ago }}</dt>
-            <dd class="col-9 text-truncate">{{ error.error }}</dd>
+            <dt class="col-4">{{ error.time_ago }}</dt>
+            <dd class="col-8 text-truncate">{{ error.error }}</dd>
             {% endfor %}
         </dl>
     </div>
-{% endfor %}
-<div style="width: 500px;" class="shadow rounded bg-primary overflow-hidden">
-    <canvas id="backup_csize_hourly" width="400" height="200"></canvas>
-</div>
-{% else %}
-<p>No repos found.</p>
-{% endif %}
+    {% endfor %}
+    <div style="width: 600px;" class="shadow rounded bg-primary overflow-hidden">
+        <canvas id="backup_csize_hourly" width="400" height="200"></canvas>
+    </div>
+    {% else %}
+    <p>No repos found.</p>
+    {% endif %}
 </div>
 </div>
 </body>
