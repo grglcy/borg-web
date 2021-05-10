@@ -1,7 +1,7 @@
 {% extends "borg/base.html" %}
 {% load static %}
 
-{% block title %}Not Found{% endblock %}
+{% block title %}404: Not Found{% endblock %}
 
 {% block script %}
 {% endblock %}
@@ -11,7 +11,7 @@ html, body {
             height: 80%;
         }
 
-        text-container {
+        main {
             display: flex;
             align-items: center;
             background-color: aliceblue;
@@ -21,11 +21,11 @@ html, body {
 
 {% block body %}
 
-<div class="text-container mx-auto w-25 px-5">
+<main class="form-signin mx-auto w-25 px-5">
     <div class="mx-5">
-    <h1 class="h1">Page not found!</h1>
+    <h1 class="h1">404: Page Not Found</h1>
     </div>
-</div>
+</main>
 
 {% endblock %}
 
