@@ -16,20 +16,22 @@
     {{ hour_list|json_script:"hour_list" }}
     <script src="{% static 'js/index.js' %}"></script>
     <style>
-        /*body {*/
-        /*    align-content: center;*/
-        /*}*/
+        body {
+            align: center;
+        }
     </style>
 </head>
 <body>
 {% if repo_list %}
-<div class="container align-content-center flex-wrap">
+<div class="container mx-auto d-flex justify-content-center flex-wrap overflow-hidden">
 {% for repo in repo_list %}
-    <div class="mx-4 rounded bg-primary
+    <div style="width: 500px;" class="rounded bg-primary
                 {% if not repo.archive_after_latest_error %}bg-danger{% endif %}">
-        <h2 class="py-1 e">{{ repo.label }}
-            <small class="text-muted text-truncate"> {{ repo.location }}</small>
+        <div class="row me-1 overflow-hidden text-truncate">
+        <h2>{{ repo.label }}
+            <small class="text-muted"> {{ repo.location }}</small>
         </h2>
+        </div>
         <dl class="row px-3 overflow-hidden">
             <dt class="col-3">Latest backup:</dt>
             <dd class="col-9">{{ repo.last_backup }}</dd>
@@ -55,7 +57,7 @@
         </dl>
     </div>
 {% endfor %}
-<div class="row mx-4 rounded bg-primary overflow-visible">
+<div style="width: 500px;" class="rounded bg-primary">
     <canvas id="backup_csize_hourly" width="400" height="200"></canvas>
 </div>
 {% else %}
