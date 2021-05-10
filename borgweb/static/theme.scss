@@ -2,7 +2,6 @@
 @import "./scss/functions";
 
 // 2. Include any default variable overrides here
-$primary: #a0c4ff;
 
 // 3. Include remainder of required Bootstrap stylesheets
 @import "./scss/variables";
@@ -10,9 +9,9 @@ $primary: #a0c4ff;
 
 $custom-colors: (
         "primary":    #a0c4ff,
-        "secondary":  #ffc6ff,
+        "info":  #ffc6ff,
         "success":    #caffbf,
-        "info":       #bdb2ff,
+        "secondary":       #bdb2ff,
         "warning":    #fdffb6,
         "danger":     #ffadad,
         "light":      #f8f9fa,
@@ -23,12 +22,14 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 //$theme-colors: map-merge($theme-colors, $custom-colors);
 
 // 4. Include any optional Bootstrap components as you like
-@import "./scss/root";
-@import "./scss/reboot";
-@import "./scss/type";
-@import "./scss/images";
-@import "./scss/containers";
-@import "./scss/grid";
+//@import "./scss/root";
+//@import "./scss/reboot";
+//@import "./scss/type";
+//@import "./scss/images";
+//@import "./scss/containers";
+//@import "./scss/grid";
+//@import "./scss/nav";
+//@import "./scss/navbar";
 
 // 5. Add additional custom code here
 @import "./scss/bootstrap";
