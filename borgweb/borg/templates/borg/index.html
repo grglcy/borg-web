@@ -14,47 +14,46 @@
     {{ hour_list|json_script:"hour_list" }}
     <script src="{% static 'js/index.js' %}"></script>
     <style>
-        .container, body, div {
-            width: 100%;
-        }
+        /*body {*/
+        /*    align-content: center;*/
+        /*}*/
     </style>
 </head>
 <body>
-<p id="hours"></p>
 {% if repo_list %}
-<div class="container p-3">
+<div class="container p-4 d-flex align-content-center flex-wrap">
 {% for repo in repo_list %}
-    <div class="float-lg-start rounded overflow-hidden bg-primary
+    <div class="col-5 p-3 rounded bg-primary
                 {% if not repo.archive_after_latest_error %}bg-danger{% endif %}">
-        <h2 class="repo_label">{{ repo.label }}
-            <small class="text-muted"> {{ repo.location }}</small>
+        <h2 class="py-1 e">{{ repo.label }}
+            <small class="text-muted text-truncate"> {{ repo.location }}</small>
         </h2>
-        <dl class="row">
-            <dt class="col-4">Latest backup:</dt>
-            <dd class="col-8">{{ repo.last_backup }}</dd>
+        <dl class="row px-5 overflow-hidden">
+            <dt class="col-3">Latest backup:</dt>
+            <dd class="col-9">{{ repo.last_backup }}</dd>
         </dl>
-        <dl class="row">
-            <dt class="col-4">Hourly backups:</dt>
-            <dd class="col-8">{{ repo.hourly_archive_string }}</dd>
+        <dl class="row px-5">
+            <dt class="col-3">Hourly backups:</dt>
+            <dd class="col-9">{{ repo.hourly_archive_string }}</dd>
         </dl>
-        <dl class="row">
-            <dt class="col-4">Size:</dt>
-            <dd class="col-8">{{ repo.size_string }}</dd>
+        <dl class="row px-5">
+            <dt class="col-3">Size:</dt>
+            <dd class="col-9">{{ repo.size_string }}</dd>
         </dl>
         {% if repo.recent_errors|length > 0 %}
         <dl class="row">
             <dt class="col-12 h4">Recent errors:</dt>
         </dl>
         {% endif %}
-        <dl class="row">
+        <dl class="row px-5">
             {% for error in repo.recent_errors %}
-            <dt class="col-4">{{ error.time_ago }}</dt>
-            <dd class="col-8 text-truncate">{{ error.error }}</dd>
+            <dt class="col-3">{{ error.time_ago }}</dt>
+            <dd class="col-9 text-truncate">{{ error.error }}</dd>
             {% endfor %}
         </dl>
     </div>
 {% endfor %}
-<div class="float-lg-start rounded overflow-hidden bg-primary p-3">
+<div class="col-5 p-3 rounded bg-primary overflow-visible">
     <canvas id="backup_csize_hourly" width="400" height="200"></canvas>
 </div>
 {% else %}

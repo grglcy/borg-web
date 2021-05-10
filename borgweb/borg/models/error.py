@@ -1,7 +1,6 @@
 from django.db import models
 from . import Label
 from ..utility.time import time_ago
-from datetime import datetime
 
 
 class Error(models.Model):

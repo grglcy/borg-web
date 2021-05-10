@@ -1,6 +1,6 @@
 from django.db import models
 from datetime import datetime, timedelta
-from ..utility.time import seconds_to_string
+from ..utility.time import seconds_to_string, subtract_months
 from ..utility.data import bytes_to_string, convert_bytes
 from . import Label
 
@@ -101,6 +101,23 @@ class Repo(models.Model):
 
     def hourly_archive_string(self):
         return ''.join(['H' if archive is not None else '-' for archive in self.hourly_archives(24)])
+
+    def monthly_archives(self, n_months: int = 12):
+        archives = []
+        for month in range(n_months):
+            current_date = subtract_months(datetime.utcnow().date(), month)
+            print(current_date)
+            archive_current_month = self.archive_set.all()\
+                .filter(start__year__gte=current_date.year,
+                        start__month__gte=current_date.month,
+                        start__year__lte=current_date.year,
+                        start__month__lte=current_date.month)\
+                .order_by('-start')
+            if len(archive_current_month) > 0:
+                archives.append(archive_current_month[0])
+            else:
+                archives.append(None)
+        return archives
 
     def daily_archives(self, n_days: int = 24):
         archives = []
