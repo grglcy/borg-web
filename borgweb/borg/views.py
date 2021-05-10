@@ -60,7 +60,7 @@ def get_repo(request):
     else:
         form = RepoForm()
 
-    return render(request, 'borg/repo.html', {'form': form})
+    return render(request, 'borg/post/repo.html', {'form': form})
 
 
 @permission_required("borg.add_archive")
@@ -88,7 +88,7 @@ def get_archive(request):
     else:
         form = ArchiveForm()
 
-    return render(request, 'borg/archive.html', {'form': form})
+    return render(request, 'borg/post/archive.html', {'form': form})
 
 
 @permission_required("borg.add_error")
@@ -106,4 +106,4 @@ def get_error(request):
     else:
         form = ErrorForm()
 
-    return render(request, 'borg/error.html', {'form': form})
+    return render(request, 'borg/post/error.html', {'form': form})

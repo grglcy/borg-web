@@ -35,16 +35,16 @@ class BorgClient(object):
         return post_responce
 
     def post_error(self, post_data):
-        url = f"{self.url}/error"
+        url = f"{self.url}/post/error"
 
         return self.__post(url, post_data).text
 
     def post_repo(self, post_data):
-        url = f"{self.url}/repo"
+        url = f"{self.url}/post/repo"
 
         return self.__post(url, post_data).text
 
     def post_archive_and_cache(self, post_data):
-        url = f"{self.url}/archive"
+        url = f"{self.url}/post/archive"
 
         return self.__post(url, post_data).text

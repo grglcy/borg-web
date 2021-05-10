@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('repo', views.get_repo, name='repo'),
-    path('archive', views.get_archive, name='archive'),
-    path('error', views.get_error, name='error'),
+    path('post/repo', views.get_repo, name='repo'),
+    path('post/archive', views.get_archive, name='archive'),
+    path('post/error', views.get_error, name='error'),
 ]
