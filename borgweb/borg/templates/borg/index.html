@@ -25,9 +25,9 @@
 <body>
 <p id="hours"></p>
 {% if repo_list %}
-<div class="container">
+<div class="container p-3">
 {% for repo in repo_list %}
-    <div class="float-lg-start rounded overflow-hidden bg-primary p-3
+    <div class="float-lg-start rounded overflow-hidden bg-primary
                 {% if not repo.archive_after_latest_error %}bg-danger{% endif %}">
         <h2 class="repo_label">{{ repo.label }}
             <small class="text-muted"> {{ repo.location }}</small>
