@@ -6,56 +6,64 @@
     <title>Borg Summary</title>
 
     {% load static %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
+            crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
     {{ hour_list|json_script:"hour_list" }}
     <script src="{% static 'js/index.js' %}"></script>
+    <style>
+        .container, body, div {
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
 <p id="hours"></p>
 {% if repo_list %}
-        {% for repo in repo_list %}
-            {% if repo.archive_after_latest_error %}
-                <div class="col-md-4 rounded float-xl-left bg-success overflow-hidden">
-            {% else %}
-                <div class="col-md-4 rounded float-xl-left bg-danger overflow-hidden">
-            {% endif %}
-                <h3 class="repo_label">{{ repo.label }}<small class="text-muted"> {{ repo.location }}</small></h3>
-                <dl class="row">
-                    <dt class="col-sm-3">Latest backup:</dt>
-                    <dd class="col-sm-9">{{ repo.last_backup }}</dd>
-                </dl>
-                <dl class="row">
-                    <dt class="col-sm-3">Hourly backups:</dt>
-                    <dd class="col-sm-9">{{ repo.hourly_archive_string }}</dd>
-                </dl>
-                <dl class="row">
-                    <dt class="col-sm-3">Size:</dt>
-                    <dd class="col-sm-9">{{ repo.size_string }}</dd>
-                </dl>
-                {% if repo.recent_errors|length > 0 %}
-                <dl class="row">
-                    <dt class="col-sm-9 h4">Recent errors:</dt>
-                </dl>
-                {% endif %}
-                <dl class="row ml-1">
-                {% for error in repo.recent_errors %}
-                    <dt class="col-sm-4">{{ error.time_ago }}</dt>
-                    <dd class="col-sm-8 text-truncate">{{ error.error }}</dd>
-                {% endfor %}
-                </dl>
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>No repos found.</p>
-    {% endif %}
-    <div class="col-md-4 rounded float-xl-left">
-    <canvas id="backup_csize_hourly" width="200" height="100"></canvas>
+<div class="container">
+{% for repo in repo_list %}
+    <div class="float-lg-start rounded overflow-hidden bg-primary p-3
+                {% if not repo.archive_after_latest_error %}bg-danger{% endif %}">
+        <h2 class="repo_label">{{ repo.label }}
+            <small class="text-muted"> {{ repo.location }}</small>
+        </h2>
+        <dl class="row">
+            <dt class="col-4">Latest backup:</dt>
+            <dd class="col-8">{{ repo.last_backup }}</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-4">Hourly backups:</dt>
+            <dd class="col-8">{{ repo.hourly_archive_string }}</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-4">Size:</dt>
+            <dd class="col-8">{{ repo.size_string }}</dd>
+        </dl>
+        {% if repo.recent_errors|length > 0 %}
+        <dl class="row">
+            <dt class="col-12 h4">Recent errors:</dt>
+        </dl>
+        {% endif %}
+        <dl class="row">
+            {% for error in repo.recent_errors %}
+            <dt class="col-4">{{ error.time_ago }}</dt>
+            <dd class="col-8 text-truncate">{{ error.error }}</dd>
+            {% endfor %}
+        </dl>
     </div>
+{% endfor %}
+<div class="float-lg-start rounded overflow-hidden bg-primary p-3">
+    <canvas id="backup_csize_hourly" width="400" height="200"></canvas>
+</div>
+{% else %}
+<p>No repos found.</p>
+{% endif %}
+</div>
 </div>
 </body>
 </html>
