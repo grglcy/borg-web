@@ -42,9 +42,14 @@ function set_daily_graph(repoDict) {
             },
             scales: {
                 y: {
-                    display: true,
                     min: 0,
-                    source: "ticks",
+                    title: {
+                        display: true,
+                        text: "Compressed Size",
+                        font: {
+                            size: 18
+                        }
+                    },
                     ticks: {
                         callback: function (value, index, values) {
                             if (value !== 0) {
