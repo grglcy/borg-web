@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <title>Login</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    {% load compress %}
+    {% compress css %}
+    <link type="text/x-scss" href="{% static 'theme.scss' %}" rel="stylesheet" media="screen">
+    {% endcompress %}
     <style>
         html, body {
             height: 80%;
