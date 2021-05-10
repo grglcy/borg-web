@@ -1,3 +1,32 @@
+# static dir
+borgweb/root/*
+
+# bootstrap
+borgweb/bootstrap/.github/*
+borgweb/bootstrap/site/*
+borgweb/bootstrap/js/*
+borgweb/bootstrap/nuget/*
+
+borgweb/bootstrap/.gitattributes
+borgweb/bootstrap/.babelrc.js
+borgweb/bootstrap/.browserslistrc
+borgweb/bootstrap/.bundlewatch.config.json
+borgweb/bootstrap/.editorconfig
+borgweb/bootstrap/.eslintignore
+borgweb/bootstrap/.eslintrc.json
+borgweb/bootstrap/.stylelintignore
+borgweb/bootstrap/.stylelintrc
+borgweb/bootstrap/CODE_OF_CONDUCT.md
+borgweb/bootstrap/composer.json
+borgweb/bootstrap/config.yml
+borgweb/bootstrap/LICENSE
+borgweb/bootstrap/package-lock.json
+borgweb/bootstrap/package.js
+borgweb/bootstrap/package.json
+borgweb/bootstrap/.gitignore
+borgweb/bootstrap/README.md
+borgweb/bootstrap/SECURITY.md
+
 # secrets
 borgweb/borgweb/secrets.py
 
