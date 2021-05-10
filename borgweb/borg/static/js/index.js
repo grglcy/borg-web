@@ -31,8 +31,7 @@ function set_daily_graph(repoDict) {
                 tooltip: {
                     callbacks: {
                         label: function (context) {
-                            var label = context.dataset.label || '';
-                            if (context.parsed.y !== null && y_units !== null) {
+                            if (context.parsed.y !== null) {
                                 return `${context.parsed.y} ${y_units}`
                             } else {
                                 return ""
@@ -43,11 +42,14 @@ function set_daily_graph(repoDict) {
             },
             scales: {
                 y: {
+                    display: true,
+                    min: 0,
+                    source: "ticks",
                     ticks: {
-                        display: true,
-                        grid: false,
                         callback: function (value, index, values) {
-                            return value + " " + y_units;
+                            if (value !== 0) {
+                                return `${value} ${y_units}`
+                            }
                         }
                     }
                 }
@@ -59,4 +61,8 @@ function set_daily_graph(repoDict) {
         document.getElementById('backup_csize_hourly'),
         config
     );
+}
+
+function getBaseLog(x, y) {
+  return Math.log(y) / Math.log(x);
 }
