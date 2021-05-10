@@ -1,61 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Borg Summary</title>
+{% extends "borg/base.html" %}
+{% load static %}
 
-    {% load static %}
-    {% load compress %}
-    {% compress css %}
-    <link type="text/x-scss" href="{% static 'theme.scss' %}" rel="stylesheet" media="screen">
-    {% endcompress %}
+{% block title %}Borg Summary{% endblock %}
+
+{% block script %}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
     {{ hour_list|json_script:"hour_list" }}
     <script src="{% static 'js/index.js' %}"></script>
-    <style>
-        div {
-            padding: 8px;
-            margin: 4px;
-        }
+{% endblock %}
 
-        dl {
-            margin-top: 4px;
-            margin-bottom: 4px;
-        }
-    </style>
-</head>
-<body>
+{% block style %}
+    .repo-container {
+        padding: 8px;
+        margin: 8px;
+    }
+
+    .att-label {
+        margin-top: 4px;
+        margin-bottom: 4px;
+    }
+{% endblock %}
+
+{% block body %}
 {% if repo_list %}
 <div class="grid mx-auto d-flex justify-content-center flex-wrap">
     {% for repo in repo_list %}
-    <div style="width: 600px;" class="shadow rounded bg-primary overflow-hidden
+    <div style="width: 600px;" class="repo-container shadow rounded bg-primary overflow-hidden
                 {% if not repo.archive_after_latest_error %}bg-danger{% endif %}">
         <div class="row me-1 overflow-hidden text-truncate">
             <h2 class="h2">{{ repo.label }}
                 <small class="text-muted"> {{ repo.location }}</small>
             </h2>
         </div>
-        <dl class="row ps-3">
+        <dl class="att-label row ps-3">
             <dt class="col-4">Latest backup:</dt>
             <dd class="col-8">{{ repo.last_backup }}</dd>
         </dl>
-        <dl class="row ps-3">
+        <dl class="att-label row ps-3">
             <dt class="col-4">Hourly backups:</dt>
             <dd class="col-8 text-truncate">{{ repo.hourly_archive_string }}</dd>
         </dl>
-        <dl class="row ps-3">
+        <dl class="att-label row ps-3">
             <dt class="col-4">Size:</dt>
             <dd class="col-8">{{ repo.size_string }}</dd>
         </dl>
         {% if repo.recent_errors|length > 0 %}
-        <dl class="row">
+        <dl class="att-label row">
             <dt class="col-12 h4">Recent errors:</dt>
         </dl>
         {% endif %}
-        <dl class="row ps-3">
+        <dl class="att-label row ps-3">
             {% for error in repo.recent_errors %}
             <dt class="col-4">{{ error.time_ago }}</dt>
             <dd class="col-8 text-truncate">{{ error.error }}</dd>
@@ -63,13 +57,12 @@
         </dl>
     </div>
     {% endfor %}
-    <div style="width: 600px;" class="shadow rounded bg-primary overflow-hidden">
+    <div style="width: 600px;" class="repo-container shadow rounded bg-primary overflow-hidden">
         <canvas id="backup_csize_hourly" width="400" height="200"></canvas>
     </div>
     {% else %}
     <p>No repos found.</p>
     {% endif %}
 </div>
-</div>
-</body>
-</html>
+{% endblock %}
+
