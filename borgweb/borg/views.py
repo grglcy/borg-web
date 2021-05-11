@@ -1,9 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 
-from .models import Repo, Label, Archive, Cache, Error
 from django.urls import reverse
-from .forms import RepoForm, ArchiveForm, ErrorForm
+from .models import Repo, Label, Archive, Cache, Error, Location
+from .forms import RepoForm, ArchiveForm, ErrorForm, LocationForm
 from django.contrib.auth.decorators import permission_required
 from .utility import data
 from datetime import datetime, timedelta
@@ -36,7 +36,7 @@ def repo_daily_dict(repo_list, n_days=14):
 
 
 @permission_required("borg.add_repo")
-def get_repo(request):
+def post_repo(request):
     if request.method == 'POST':
         form = RepoForm(request.POST)
         if form.is_valid():
@@ -64,7 +64,7 @@ def get_repo(request):
 
 
 @permission_required("borg.add_archive")
-def get_archive(request):
+def post_archive(request):
     if request.method == 'POST':
         form = ArchiveForm(request.POST)
         if form.is_valid():
@@ -92,7 +92,7 @@ def get_archive(request):
 
 
 @permission_required("borg.add_error")
-def get_error(request):
+def post_error(request):
     if request.method == 'POST':
         form = ErrorForm(request.POST)
         if form.is_valid():
@@ -107,3 +107,20 @@ def get_error(request):
         form = ErrorForm()
 
     return render(request, 'borg/post/error.html', {'form': form})
+
+
+@permission_required("borg.add_location")
+def post_location(request):
+    if request.method == 'POST':
+        form = LocationForm(request.POST)
+        if form.is_valid():
+            cdata = form.cleaned_data
+            label, _ = Location.objects.get_or_create(label=cdata['label'],
+                                                      defaults={"path": cdata["path"]})
+            label.save()
+
+            return HttpResponseRedirect(reverse('index'))
+    else:
+        form = LocationForm ()
+
+    return render(request, 'borg/post/location.html', {'form': form})

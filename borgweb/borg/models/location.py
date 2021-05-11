@@ -24,7 +24,7 @@ DESCRIPTION = {
 class Location(models.Model):
     label = models.TextField(unique=True)
     path = models.TextField()
-    last_checked = models.DateTimeField()
+    last_checked = models.DateTimeField(null=True)
 
     def __path_type(self):
         try:
@@ -65,3 +65,11 @@ class Location(models.Model):
 
     def have_permission(self):
         return self.__path_type() != ACCESS_DENIED
+
+    def short_description(self):
+        type = self.__path_type()
+        type_description = self.type_description()
+        existence = "exists" if self.exists() else "does not exist"
+
+        if self.exists():
+            return f"{type_description} {self.path} {existence}"

@@ -3,3 +3,4 @@ from .repo import Repo
 from .cache import Cache
 from .archive import Archive
 from .error import Error
+from .location import Location
