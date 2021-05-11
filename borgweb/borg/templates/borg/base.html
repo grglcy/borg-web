@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    {% block script %}
     {% load static %}
     {% load compress %}
     {% compress css %}
     <link type="text/x-scss" href="{% static 'theme.scss' %}" rel="stylesheet" media="screen">
     {% endcompress %}
+    {% endblock %}
 
-    {% block script %}{% endblock %}
     <style>{% block style %}{% endblock %}</style>
     <title>{% block title %}Title{% endblock %}</title>
 </head>
