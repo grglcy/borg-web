@@ -71,5 +71,4 @@ class Location(models.Model):
         type_description = self.type_description()
         existence = "exists" if self.exists() else "does not exist"
 
-        if self.exists():
-            return f"{type_description} {self.path} {existence}"
+        return f"{type_description} {self.path} {existence}"
