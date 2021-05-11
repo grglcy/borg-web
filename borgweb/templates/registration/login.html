@@ -1,35 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-    {% load static %}
-    {% load compress %}
-    {% compress css %}
-    <link type="text/x-scss" href="{% static 'theme.scss' %}" rel="stylesheet" media="screen">
-    {% endcompress %}
-    <style>
-        html, body {
-            height: 80%;
+{% extends "borg/base.html" %}
+
+{% block title %}Login{% endblock %}
+{% load static %}
+{% block script %}
+    {{block.super}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    {{ hour_list|json_script:"hour_list" }}
+    <script src="{% static 'js/index.js' %}"></script>
+{% endblock %}
+
+{% block style %}
+    {{ block.super }}
+    body {
+            background-color: aliceblue;
         }
 
-        body {
+        .vertical-center {
+            min-height: 70%;
+            min-height: 70vh;
+
             display: flex;
             align-items: center;
-            background-color: aliceblue;
-            text-align: center;
         }
-    </style>
-</head>
-<body>
-{% block content %}
+        form {
+            min-width: 300px;
+        }
+{% endblock %}
 
-<main class="form-signin mx-auto w-25 px-5">
-    <div class="mx-5">
-    <form method="post">
+{% block body %}
+
+<div class="container vertical-center justify-content-center">
+      <form method="post" class="text-center mx-auto">
         {% csrf_token %}
         <!--    <img class="mb-4" src="" alt="" width="" height="">-->
-        <h1 class="h1 mb-4 fw-regular">Log in</h1>
+        <h1 class="display-4 mb-4 fw-normal">Log in</h1>
 
         <div class="shadow form-floating my-2">
             <input class="form-control" placeholder="Username" type="text" name="username" autofocus=""
@@ -47,9 +51,6 @@
 
         <button class="shadow w-100 btn btn-lg btn-secondary" type="submit">Log In</button>
     </form>
-        </div>
-</main>
+</div>
 
 {% endblock %}
-</body>
-</html>
