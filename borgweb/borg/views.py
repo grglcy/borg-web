@@ -11,12 +11,14 @@ from datetime import datetime, timedelta
 
 def index(request):
     repo_list = Repo.objects.all()
+    location_list = Location.objects.all()
 
     repo_dict = repo_daily_dict(repo_list, 24)
 
     context = {
         'repo_list': repo_list,
-        'hour_list': repo_dict
+        'hour_list': repo_dict,
+        'location_list': location_list,
     }
     return render(request, 'borg/index.html', context)
 

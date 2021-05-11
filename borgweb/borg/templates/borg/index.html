@@ -62,7 +62,24 @@
         <canvas id="backup_csize_hourly" width="400" height="200"></canvas>
     </div>
     {% else %}
-    <p>No repos found.</p>
+    <div style="width: 600px;" class="repo-container shadow rounded bg-primary overflow-hidden">
+        <div style="width: 600px;" class="repo-container shadow rounded bg-primary overflow-hidden">
+        <h2 class="h2">No repositories found</h2>
+    </div>
+    </div>
+    {% endif %}
+    {% if location_list %}
+    <div style="width: 600px;" class="repo-container shadow rounded bg-primary overflow-hidden">
+        <h2 class="h2">Paths</h2>
+        {% for location in location_list %}
+        <dl class="att-label row ps-3">
+            <dt class="col-3">{{ location.label }}</dt>
+            <dd class="col-9">{{ location.short_description }}</dd>
+        </dl>
+        {% endfor %}
+    </div>
+    {% else %}
+
     {% endif %}
 </div>
 {% endblock %}
