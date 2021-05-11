@@ -16,8 +16,8 @@
         }
 
         .vertical-center {
-            min-height: 70%;
-            min-height: 70vh;
+            min-height: 60%;
+            min-height: 60vh;
 
             display: flex;
             align-items: center;
@@ -30,10 +30,11 @@
 {% block body %}
 
 <div class="container vertical-center justify-content-center">
-      <form method="post" class="text-center mx-auto">
+    <div>
+    <h1 class="display-4 fw-normal align-bottom text-center">Log in</h1>
+      <form method="post" class="mx-auto pt-4">
         {% csrf_token %}
         <!--    <img class="mb-4" src="" alt="" width="" height="">-->
-        <h1 class="display-4 mb-4 fw-normal">Log in</h1>
 
         <div class="shadow form-floating my-2">
             <input class="form-control" placeholder="Username" type="text" name="username" autofocus=""
@@ -51,6 +52,7 @@
 
         <button class="shadow w-100 btn btn-lg btn-secondary" type="submit">Log In</button>
     </form>
+        </divclass>
 </div>
 
 {% endblock %}
