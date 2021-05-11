@@ -2,17 +2,20 @@
 
 function fill_line () {
 	printf '=%.0s' $(seq 1 $1)
+	printf "\n"
 }
 
 function print_action () {
 	printf "\n"
 	fill_line $(tput cols)
-	printf "\n$1\n"
+	printf "$1\n"
 	fill_line $(tput cols)
-	printf "\n\n"
+	printf "\n"
 }
 
 cd "${0%/*}"
+
+print_action "Checking for existence of python venv"
 
 if ! source ./.venv/bin/activate; then
 	printf "No venv activation script\n"
