@@ -6,6 +6,7 @@
 
     {% block script %}
     {% load static %}
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
     {% load compress %}
     {% compress css %}
     <link type="text/x-scss" href="{% static 'theme.scss' %}" rel="stylesheet" media="screen">
