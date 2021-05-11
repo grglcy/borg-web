@@ -1,0 +1,30 @@
+{% extends "borg/base.html" %}
+{% load static %}
+
+{% block title %}{% endblock %}
+
+{% block style %}
+        body {
+            background-color: aliceblue;
+        }
+
+        .vertical-center {
+            min-height: 80%;
+            min-height: 80vh;
+
+            display: flex;
+            align-items: center;
+        }
+{% endblock %}
+
+{% block body %}
+
+<div class="container vertical-center">
+  <div class="row w-100">
+      <h1 class="text-center display-1">{% block error_message %}{% endblock %}</h1>
+  </div>
+</div>
+
+
+{% endblock %}
+

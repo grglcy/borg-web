@@ -1,30 +1,4 @@
-{% extends "borg/base.html" %}
-{% load static %}
+{% extends "error.html" %}
 
-{% block title %}404: Not Found{% endblock %}
-
-{% block style %}
-        body {
-            background-color: aliceblue;
-        }
-
-        .vertical-center {
-            min-height: 80%;
-            min-height: 80vh;
-
-            display: flex;
-            align-items: center;
-        }
-{% endblock %}
-
-{% block body %}
-
-<div class="container vertical-center">
-  <div class="row w-100">
-      <h1 class="text-center display-1">404: Not Found</h1>
-  </div>
-</div>
-
-
-{% endblock %}
-
+{% block title %}404: Page Not Found{% endblock %}
+{% block error_message %}404: Page Not Found{% endblock %}
