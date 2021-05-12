@@ -11,6 +11,26 @@ class Repo(models.Model):
     last_modified = models.DateTimeField()
     label = models.OneToOneField(Label, on_delete=models.CASCADE, unique=True)
 
+    def warning(self):
+        if self.error():
+            return True
+        else:
+            latest_archive = self.latest_archive()
+            if latest_archive.start > datetime.utcnow() - timedelta(hours=2):
+                return False
+            else:
+                return True
+
+    def error(self):
+        latest_archive = self.latest_archive()
+        if latest_archive is None or not self.archive_after_latest_error():
+            return True
+
+        if latest_archive.start > datetime.utcnow() - timedelta(hours=4):
+            return False
+        else:
+            return True
+
     def archive_after_latest_error(self):
         latest_archive = self.latest_archive()
         latest_error = self.latest_error()
@@ -100,7 +120,7 @@ class Repo(models.Model):
         return ''.join(['H' if archive is not None else '-' for archive in archives])
 
     def hourly_archive_string(self):
-        return ''.join(['H' if archive is not None else '-' for archive in self.hourly_archives(24)])
+        return ''.join(['H' if archive is not None else '-' for archive in self.hourly_archives(48)])
 
     def monthly_archives(self, n_months: int = 12):
         archives = []

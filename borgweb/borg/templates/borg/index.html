@@ -26,8 +26,8 @@
 {% if repo_list %}
 <div class="grid mx-auto d-flex justify-content-center flex-wrap">
     {% for repo in repo_list %}
-    <div style="width: 600px;" class="repo-container shadow rounded bg-primary overflow-hidden
-                {% if not repo.archive_after_latest_error %}bg-danger{% endif %}">
+    <div style="width: 600px;" class="repo-container shadow rounded overflow-hidden
+                {% if repo.error %}bg-danger{% elif repo.warning %}bg-warning{% else %}bg-primary{% endif %}">
         <div class="row me-1 overflow-hidden text-truncate">
             <h2 class="h2">{{ repo.label }}
                 <small class="text-muted"> {{ repo.location }}</small>
