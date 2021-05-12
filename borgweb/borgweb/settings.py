@@ -22,8 +22,14 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AXES_LOCKOUT_CALLABLE = "borg.views.axes"
 
 # Application definition
+
+AUTHENTICATION_BACKENDS = [
+    'axes.backends.AxesBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 INSTALLED_APPS = [
     'borg.apps.BorgConfig',
@@ -34,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'compressor',
+    'axes',
 ]
 
 MIDDLEWARE = [
@@ -44,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'axes.middleware.AxesMiddleware',
 ]
 
 ROOT_URLCONF = 'borgweb.urls'

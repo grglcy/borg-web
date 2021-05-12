@@ -126,3 +126,7 @@ def post_location(request):
         form = LocationForm ()
 
     return render(request, 'borg/post/location.html', {'form': form})
+
+
+def axes(request, credentials, *args, **kwargs):
+    return render(request, 'error/axes.html', {})
