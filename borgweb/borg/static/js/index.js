@@ -52,9 +52,7 @@ function set_daily_graph(repoDict) {
                     },
                     ticks: {
                         callback: function (value, index, values) {
-                            if (value !== 0) {
-                                return `${value} ${y_units}`
-                            }
+                            return `${value} ${y_units}`
                         }
                     }
                 }
