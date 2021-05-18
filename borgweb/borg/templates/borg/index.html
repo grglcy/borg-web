@@ -23,7 +23,6 @@
 {% endblock %}
 
 {% block body %}
-{% cache 60 repos %}
 {% if repo_list %}
 <div class="grid mx-auto d-flex justify-content-center flex-wrap">
     {% for repo in repo_list %}
@@ -83,6 +82,5 @@
     {% endif %}
     </div>
 </div>
-{% endcache %}
 {% endblock %}
 

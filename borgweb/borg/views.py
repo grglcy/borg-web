@@ -7,17 +7,18 @@ from .forms import RepoForm, ArchiveForm, ErrorForm, LocationForm
 from django.contrib.auth.decorators import permission_required
 from .utility import data
 from datetime import datetime, timedelta
+from django.core.cache import cache
 
 
 def index(request):
     repo_list = Repo.objects.all()
     location_list = Location.objects.all()
 
-    repo_dict = repo_daily_dict(repo_list, 24)
+    # repo_dict = repo_daily_dict(repo_list, 24)
 
     context = {
         'repo_list': repo_list,
-        'hour_list': repo_dict,
+        # 'hour_list': repo_dict,
         'location_list': location_list,
     }
     return render(request, 'borg/index.html', context)
@@ -57,6 +58,7 @@ def post_repo(request):
                                                                         'last_modified': cdata['last_modified'],
                                                                         'label': label})
             repo.save()
+            cache.clear()
 
             return HttpResponseRedirect(reverse('index'))
     else:
@@ -85,6 +87,7 @@ def post_archive(request):
 
             archive = Archive(**archive_dict, repo=repo, cache=cache)
             archive.save()
+            cache.clear()
 
             return HttpResponseRedirect(reverse('index'))
     else:
@@ -103,6 +106,7 @@ def post_error(request):
 
             error = Error(label=label, error=cdata['error'], time=cdata['time'])
             error.save()
+            cache.clear()
 
             return HttpResponseRedirect(reverse('index'))
     else:
@@ -120,6 +124,7 @@ def post_location(request):
             label, _ = Location.objects.get_or_create(label=cdata['label'],
                                                       defaults={"path": cdata["path"]})
             label.save()
+            cache.clear()
 
             return HttpResponseRedirect(reverse('index'))
     else:
