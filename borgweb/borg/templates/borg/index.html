@@ -38,10 +38,6 @@
             <dd class="col-8">{{ repo.last_backup }}</dd>
         </dl>
         <dl class="att-label row ps-3">
-            <dt class="col-4">Hourly backups:</dt>
-            <dd class="col-8 text-truncate">{{ repo.hourly_archive_string }}</dd>
-        </dl>
-        <dl class="att-label row ps-3">
             <dt class="col-4">Size:</dt>
             <dd class="col-8">{{ repo.size_string }}</dd>
         </dl>
@@ -49,12 +45,12 @@
         <dl class="att-label row">
             <dt class="col-12 h4">Recent errors:</dt>
         </dl>
-        {% endif %}
         <dl class="att-label row ps-3">
             {% for error in repo.recent_errors %}
             <dt class="col-4">{{ error.time_ago }}</dt>
             <dd class="col-8 text-truncate">{{ error.error }}</dd>
             {% endfor %}
+        {% endif %}
         </dl>
     </div>
     {% endfor %}
