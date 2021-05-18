@@ -1,7 +1,8 @@
 {% extends "borg/base.html" %}
+{% load cache %}
+{% load static %}
 
 {% block title %}Borg Summary{% endblock %}
-{% load static %}
 {% block script %}
     {{block.super}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -23,6 +24,7 @@
 {% endblock %}
 
 {% block body %}
+{% cache 60 repos %}
 {% if repo_list %}
 <div class="grid mx-auto d-flex justify-content-center flex-wrap">
     {% for repo in repo_list %}
@@ -82,5 +84,6 @@
     {% endif %}
     </div>
 </div>
+{% endcache %}
 {% endblock %}
 
