@@ -14,7 +14,7 @@ def index(request):
     repo_list = Repo.objects.all()
     location_list = Location.objects.all()
 
-    # repo_dict = repo_daily_dict(repo_list, 24)
+    # repo_dict = repo_daily_dict(repo_list, 8)
 
     context = {
         'repo_list': repo_list,

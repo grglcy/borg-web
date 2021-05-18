@@ -94,7 +94,7 @@ class Repo(models.Model):
                 days.append(len(cday_archives) > 0)
         return days
 
-    def daily_dict(self, units, n_hours: int = 24):
+    def daily_dict(self, units, n_hours: int = 7):
         archives = self.daily_archives(n_hours)
         return {
             "id": self.id,
@@ -120,7 +120,7 @@ class Repo(models.Model):
         return ''.join(['H' if archive is not None else '-' for archive in archives])
 
     def hourly_archive_string(self):
-        return ''.join(['H' if archive is not None else '-' for archive in self.hourly_archives(48)])
+        return ''.join(['H' if archive is not None else '-' for archive in self.hourly_archives(8)])
 
     def monthly_archives(self, n_months: int = 12):
         archives = []
@@ -139,7 +139,7 @@ class Repo(models.Model):
                 archives.append(None)
         return archives
 
-    def daily_archives(self, n_days: int = 24):
+    def daily_archives(self, n_days: int = 7):
         archives = []
         for day in range(n_days):
             current_date = (datetime.utcnow() - timedelta(days=day)).date()
@@ -152,7 +152,7 @@ class Repo(models.Model):
                 archives.append(None)
         return archives
 
-    def hourly_archives(self, n_hours: int = 24):
+    def hourly_archives(self, n_hours: int = 8):
         archives = []
         for hour in range(n_hours):
             current_hour = datetime.utcnow() - timedelta(hours=hour)
