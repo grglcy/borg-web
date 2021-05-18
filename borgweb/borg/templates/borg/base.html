@@ -6,21 +6,21 @@
     {% load static %}
     {% load cache %}
 
-    {% block script %}
-    {% cache 3600 sass %}
+    {% cache 3600 script %}
     <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
     {% load compress %}
     {% compress css %}
     <link type="text/x-scss" href="{% static 'theme.scss' %}" rel="stylesheet" media="screen">
     {% endcompress %}
     {% endcache %}
+
+    {% block script %}
     {% endblock %}
 
     <style>{% block style %}{% endblock %}</style>
     <title>{% block title %}Title{% endblock %}</title>
 </head>
 <body>
-
 {% cache 3600 navbar %}
 <nav class="navbar navbar-expand-md navbar-dark bg-secondary mb-2">
   <div class="container-fluid">
