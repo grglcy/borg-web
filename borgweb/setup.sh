@@ -35,7 +35,7 @@ print_action "Installing pip packages, this may take a while..."
 
 # install required pip packages
 yes | python -m pip install --upgrade wheel
-yes | python -m pip install django gunicorn sass django-libsass django-compressor django-axes
+yes | python -m pip install django gunicorn django-libsass django-compressor django-axes pymemcache
 
 print_action "Setting up static files and database"
 
