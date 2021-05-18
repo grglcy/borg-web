@@ -6,11 +6,14 @@
 
     {% block script %}
     {% load static %}
+    {% load cache %}
+    {% cache 3600 sass %}
     <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
     {% load compress %}
     {% compress css %}
     <link type="text/x-scss" href="{% static 'theme.scss' %}" rel="stylesheet" media="screen">
     {% endcompress %}
+    {% endcache %}
     {% endblock %}
 
     <style>{% block style %}{% endblock %}</style>

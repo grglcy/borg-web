@@ -7,10 +7,8 @@ from .forms import RepoForm, ArchiveForm, ErrorForm, LocationForm
 from django.contrib.auth.decorators import permission_required
 from .utility import data
 from datetime import datetime, timedelta
-from django.views.decorators.cache import cache_page
 
 
-@cache_page(60)
 def index(request):
     repo_list = Repo.objects.all()
     location_list = Location.objects.all()
