@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    {% block script %}
     {% load static %}
     {% load cache %}
+
+    {% block script %}
     {% cache 3600 sass %}
     <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
     {% load compress %}
@@ -20,6 +20,8 @@
     <title>{% block title %}Title{% endblock %}</title>
 </head>
 <body>
+
+{% cache 3600 navbar %}
 <nav class="navbar navbar-expand-md navbar-dark bg-secondary mb-2">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">Home</a>
@@ -53,6 +55,7 @@
     </div>
   </div>
 </nav>
+{% endcache %}
 
 {% block body %}{% endblock %}
 </body>
