@@ -1,5 +1,5 @@
 window.addEventListener("DOMContentLoaded", function () {
-    const repoDict = JSON.parse(document.getElementById('hour_list').textContent);
+    // const repoDict = JSON.parse(document.getElementById('hour_list').textContent);
     // set_daily_graph(repoDict)
 }, false);
 
