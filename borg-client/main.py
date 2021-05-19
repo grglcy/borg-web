@@ -8,13 +8,18 @@ import urllib3
 
 
 def main(args):
-    borg_output = " ".join(stdin.readlines())
+    borg_json, errors = get_json_and_errors(stdin.readlines())
     if not (args.label and args.username and args.password and args.url):
         raise Exception("Supply label, username, password and url")
     else:
         client = BorgClient(url=args.url, username=args.username, password=args.password)
-        try:
-            borg_json = json.loads(borg_output)
+
+        current_time = datetime.utcnow()
+        for error in errors:
+            error = Error(error, current_time)
+            client.post_error(error.get_dict(args.label))
+
+        if borg_json is not None:
             repo = Repo.from_json(borg_json['repository'])
             archive = Archive.from_json(borg_json['archive'])
             cache = Cache.from_json(borg_json['cache']['stats'])
@@ -23,9 +28,20 @@ def main(args):
             archive_cache = archive.get_dict(args.label)
             archive_cache.update(cache.get_dict(args.label))
             client.post_archive_and_cache(archive_cache)
+
+
+def get_json_and_errors(borg_output: list):
+    errors = []
+    borg_json = None
+    for index in range(len(borg_output)):
+        truncated_output = borg_output[index:]
+        try:
+            borg_json = json.loads(" ".join(truncated_output))
+            break
         except json.JSONDecodeError:
-            error = Error(borg_output, datetime.utcnow())
-            client.post_error(error.get_dict(args.label))
+            errors.append(truncated_output[0].strip())
+
+    return borg_json, errors
 
 
 def get_args():
