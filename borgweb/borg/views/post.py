@@ -4,46 +4,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import permission_required
 from django.core.cache import cache
-from django.http import JsonResponse
-from .models import Repo, Label, Archive, Cache, Error, Location
-from .forms import RepoForm, ArchiveForm, ErrorForm, LocationForm
-from datetime import datetime, timedelta
-from .utility import data
-
-
-def index(request):
-    repo_list = Repo.objects.all()
-    location_list = Location.objects.all()
-
-    context = {
-        'repo_list': repo_list,
-        'location_list': location_list,
-    }
-    return render(request, 'borg/index.html', context)
-
-
-def repo_daily_dict(repo_list, n_days=14):
-    date_labels = list(reversed([(datetime.utcnow() - timedelta(days=day)).strftime("%d %b") for day in range(n_days)]))
-    max_repo_size = max(repo.latest_archive().cache.unique_csize for repo in repo_list)
-    _, max_unit = data.convert_bytes(max_repo_size)
-
-    repo_dicts = [repo.daily_dict(max_unit, n_days) for repo in repo_list]
-
-    return {
-        "date_labels": date_labels,
-        "repos": repo_dicts,
-        "units": max_unit
-    }
-
-
-def repo_daily_json(request):
-    repo_list = Repo.objects.all()
-    return JsonResponse(repo_daily_dict(repo_list, 31))
-
-
-def repo(request, repo_label: str):
-    s_repo = get_object_or_404(Repo, label__label=repo_label)
-    return render(request, 'borg/repo.html', {'repo': s_repo})
+from ..models import Repo, Label, Archive, Cache, Error, Location
+from ..forms import RepoForm, ArchiveForm, ErrorForm, LocationForm
 
 
 @permission_required("borg.add_repo")
@@ -139,7 +101,3 @@ def post_location(request):
         form = LocationForm ()
 
     return render(request, 'borg/post/location.html', {'form': form})
-
-
-def axes(request, credentials, *args, **kwargs):
-    return render(request, 'error/axes.html', {})
