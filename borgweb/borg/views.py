@@ -2,23 +2,21 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 
 from django.urls import reverse
+from django.contrib.auth.decorators import permission_required
+from django.core.cache import cache
+from django.http import JsonResponse
 from .models import Repo, Label, Archive, Cache, Error, Location
 from .forms import RepoForm, ArchiveForm, ErrorForm, LocationForm
-from django.contrib.auth.decorators import permission_required
-from .utility import data
 from datetime import datetime, timedelta
-from django.core.cache import cache
+from .utility import data
 
 
 def index(request):
     repo_list = Repo.objects.all()
     location_list = Location.objects.all()
 
-    # repo_dict = repo_daily_dict(repo_list, 8)
-
     context = {
         'repo_list': repo_list,
-        # 'hour_list': repo_dict,
         'location_list': location_list,
     }
     return render(request, 'borg/index.html', context)
@@ -36,6 +34,11 @@ def repo_daily_dict(repo_list, n_days=14):
         "repos": repo_dicts,
         "units": max_unit
     }
+
+
+def repo_daily_json(request):
+    repo_list = Repo.objects.all()
+    return JsonResponse(repo_daily_dict(repo_list, 31))
 
 
 def repo(request, repo_label: str):

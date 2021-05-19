@@ -5,6 +5,7 @@ from . import views
 
 urlpatterns = [
     path('', cache_page(60)(views.index), name='index'),
+    path('repo_daily.json', views.repo_daily_json, name='repo json'),
     path('repo/<str:repo_label>', views.repo, name='repo'),
     path('post/repo', views.post_repo, name='post repo'),
     path('post/archive', views.post_archive, name='post archive'),

@@ -1,6 +1,7 @@
 window.addEventListener("DOMContentLoaded", function () {
-    // const repoDict = JSON.parse(document.getElementById('hour_list').textContent);
-    // set_daily_graph(repoDict)
+    $.getJSON( "repo_daily.json", function( json ) {
+        set_daily_graph(json);
+     });
 }, false);
 
 function set_daily_graph(repoDict) {
