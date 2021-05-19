@@ -38,6 +38,11 @@ def repo_daily_dict(repo_list, n_days=14):
     }
 
 
+def repo(request, repo_label: str):
+    s_repo = get_object_or_404(Repo, label__label=repo_label)
+    return render(request, 'borg/repo.html', {'repo': s_repo})
+
+
 @permission_required("borg.add_repo")
 def post_repo(request):
     if request.method == 'POST':

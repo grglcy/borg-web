@@ -1,0 +1,28 @@
+{% extends "borg/base.html" %}
+
+{% block title %}Repo: {{ repo.label }}{% endblock %}
+{% load static %}
+{% block script %}
+    {{block.super}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    {{ hour_list|json_script:"hour_list" }}
+{#    <script src="{% static 'js/index.js' %}"></script>#}
+{% endblock %}
+
+{% block style %}
+
+{#    .repo-container {#}
+{#        padding: 8px;#}
+{#        margin: 8px;#}
+{#    }#}
+{##}
+{#    .att-label {#}
+{#        margin-top: 4px;#}
+{#        margin-bottom: 4px;#}
+{#    }#}
+{% endblock %}
+
+{% block body %}
+<h1>Repo: {{ repo.label }}</h1>
+{% endblock %}
+

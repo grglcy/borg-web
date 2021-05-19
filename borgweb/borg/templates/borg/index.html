@@ -29,7 +29,7 @@
     <div style="width: 600px;" class="repo-container shadow rounded overflow-hidden
                 {% if repo.error %}bg-danger{% elif repo.warning %}bg-warning{% else %}bg-primary{% endif %}">
         <div class="row me-1 overflow-hidden text-truncate">
-            <h2 class="h2">{{ repo.label }}
+            <h2 class="h2"><a href="/repo/{{ repo.label }}">{{ repo.label }}</a>
                 <small class="text-muted"> {{ repo.location }}</small>
             </h2>
         </div>
