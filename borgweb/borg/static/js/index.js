@@ -1,26 +1,22 @@
 window.addEventListener("DOMContentLoaded", function () {
     $.getJSON( "repo_daily.json", function( json ) {
-        set_daily_graph(json);
+        draw_time_graph("daily_backup_size", json.repos, json.dates, json.units);
      });
 }, false);
 
-function set_daily_graph(repoDict) {
-    const labels = repoDict.date_labels;
-    const y_units = repoDict.units
-
+function draw_time_graph(chartID, repos, dateLabels, sizeUnits) {
     var datasets = []
-    repoDict.repos.forEach(function (repo) {
+    repos.forEach(function (repo) {
         datasets.push({
             label: repo.label,
             data: repo.daily_size,
             fill: false,
-            tension: 0.1,
             borderColor: 'rgb(75, 192, 192)'
         });
     })
 
     const data = {
-        labels: labels,
+        labels: dateLabels,
         datasets: datasets
     };
 
@@ -32,8 +28,9 @@ function set_daily_graph(repoDict) {
                 tooltip: {
                     callbacks: {
                         label: function (context) {
-                            if (context.parsed.y !== null) {
-                                return `${context.parsed.y} ${y_units}`
+                            const yValue = context.parsed.y
+                            if (yValue !== null) {
+                                return `${yValue} ${sizeUnits}`
                             } else {
                                 return ""
                             }
@@ -53,7 +50,7 @@ function set_daily_graph(repoDict) {
                     },
                     ticks: {
                         callback: function (value, index, values) {
-                            return `${value} ${y_units}`
+                            return `${value} ${sizeUnits}`
                         }
                     }
                 }
@@ -62,11 +59,7 @@ function set_daily_graph(repoDict) {
     }
 
     var myChart = new Chart(
-        document.getElementById('backup_csize_hourly'),
+        document.getElementById(chartID),
         config
     );
-}
-
-function getBaseLog(x, y) {
-  return Math.log(y) / Math.log(x);
 }
