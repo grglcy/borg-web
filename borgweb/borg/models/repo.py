@@ -79,10 +79,10 @@ class Repo(models.Model):
         errors = self.label.errors.all().filter(time__gt=days_ago)
         return errors
 
-    def get_archive_days(self):
+    def get_archive_days(self, count: int = 31):
         current_day = datetime.utcnow().day
         days = []
-        for day in reversed(range(1, 31)):
+        for day in reversed(range(1, count)):
             try:
                 cday = datetime.utcnow().replace(day=day)
             except ValueError:
@@ -94,12 +94,12 @@ class Repo(models.Model):
                 days.append(len(cday_archives) > 0)
         return days
 
-    def daily_dict(self, units, n_hours: int = 7):
-        archives = self.daily_archives(n_hours)
+    def size_on_dates(self, units, dates: list):
+        archives = self.archives_on_dates(dates)
         return {
             "id": self.id,
             "label": self.label.label,
-            "daily_size": list(reversed(self.series_csize(archives, units)))
+            "size": list(self.series_csize(archives, units))
         }
 
     @staticmethod
@@ -111,43 +111,16 @@ class Repo(models.Model):
         return [convert_bytes(archive.cache.unique_csize, units)[0]
                 if archive is not None else None for archive in archives]
 
-    @staticmethod
-    def series_csize_pretty(archives):
-        return [archive.cache.unique_csize if archive is not None else None for archive in archives]
-
-    @staticmethod
-    def series_success_string(archives):
-        return ''.join(['H' if archive is not None else '-' for archive in archives])
-
     def hourly_archive_string(self):
         return ''.join(['H' if archive is not None else '-' for archive in self.hourly_archives(8)])
 
-    def monthly_archives(self, n_months: int = 12):
+    def archives_on_dates(self, dates: list):
         archives = []
-        for month in range(n_months):
-            current_date = subtract_months(datetime.utcnow().date(), month)
-            print(current_date)
-            archive_current_month = self.archive_set.all()\
-                .filter(start__year__gte=current_date.year,
-                        start__month__gte=current_date.month,
-                        start__year__lte=current_date.year,
-                        start__month__lte=current_date.month)\
-                .order_by('-start')
-            if len(archive_current_month) > 0:
-                archives.append(archive_current_month[0])
-            else:
-                archives.append(None)
-        return archives
-
-    def daily_archives(self, n_days: int = 7):
-        archives = []
-        for day in range(n_days):
-            current_date = (datetime.utcnow() - timedelta(days=day)).date()
-            archive_current_date = self.archive_set.all()\
-                .filter(start__date=current_date)\
-                .order_by('-start')
-            if len(archive_current_date) > 0:
-                archives.append(archive_current_date[0])
+        archive_queryset = self.archive_set.all()
+        for date in dates:
+            date_archives = archive_queryset.filter(start__date=date).order_by('-start')
+            if date_archives.exists():
+                archives.append(date_archives[0])
             else:
                 archives.append(None)
         return archives

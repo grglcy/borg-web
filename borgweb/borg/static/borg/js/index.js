@@ -9,7 +9,7 @@ function draw_time_graph(chartID, repos, dateLabels, sizeUnits) {
     repos.forEach(function (repo) {
         datasets.push({
             label: repo.label,
-            data: repo.daily_size,
+            data: repo.size,
             fill: false,
             borderColor: 'rgb(75, 192, 192)'
         });
