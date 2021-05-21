@@ -96,11 +96,11 @@ class Repo(models.Model):
 
     def size_on_dates(self, units, dates: list):
         archives = self.archives_on_dates(dates)
-        return {
-            "id": self.id,
-            "label": self.label.label,
-            "size": list(self.series_csize(archives, units))
-        }
+        return self.series_csize(archives, units)
+
+    def size_on_months(self, units, months: int = 12):
+        archives = self.monthly_archives(months)
+        return self.series_csize(archives, units)
 
     @staticmethod
     def series_times(archives):
@@ -113,6 +113,20 @@ class Repo(models.Model):
 
     def hourly_archive_string(self):
         return ''.join(['H' if archive is not None else '-' for archive in self.hourly_archives(8)])
+
+    def monthly_archives(self, n_months: int = 12):
+        archives = []
+        for month in range(n_months):
+            current_date = subtract_months(datetime.utcnow(), month)
+            archive_current_month = self.archive_set.all() \
+                .filter(start__year=current_date.year,
+                        start__month=current_date.month) \
+                .order_by('-start')
+            if len(archive_current_month) > 0:
+                archives.append(archive_current_month[0])
+            else:
+                archives.append(None)
+        return archives[::-1]
 
     def archives_on_dates(self, dates: list):
         archives = []
