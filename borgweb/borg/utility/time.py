@@ -1,4 +1,5 @@
 from datetime import datetime
+import calendar
 
 
 def time_ago(time: datetime, short=False, truncate=False):
@@ -53,3 +54,22 @@ def subtract_months(p_date: datetime, offset):
         return new_date.replace(month=12 - offset, year=new_date.year - 1)
     else:
         return new_date.replace(month=new_date.month - months)
+
+
+def last_day_previous_months(months_ago: int):
+    dates = []
+    current_date = datetime.utcnow().date()
+    current_year = current_date.year
+    current_month = current_date.month
+    dates.append(current_date)
+    for month in range(months_ago - 1):
+        if current_month == 1:
+            current_year -= 1
+            current_month = 12
+        else:
+            current_month -= 1
+        last_day = calendar.monthrange(current_year, current_month)[1]
+        current_date = current_date.replace(year=current_year, month=current_month, day=last_day)
+        dates.append(current_date)
+
+    return dates[::-1]

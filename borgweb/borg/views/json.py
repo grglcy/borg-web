@@ -2,11 +2,11 @@ from datetime import datetime, timedelta
 from django.http import JsonResponse
 from ..models import Repo
 from ..utility import data
-import calendar
+from ..utility.time import last_day_previous_months
 
 
 def repo_monthly_json(request, months_ago: int = 12):
-    date_labels = monthly_date_labels(months_ago)
+    date_labels = [date.strftime("%b %Y") for date in last_day_previous_months(months_ago)]
 
     repo_list = Repo.objects.all()
 
@@ -24,25 +24,6 @@ def repo_monthly_json(request, months_ago: int = 12):
         "units": max_unit
     }
     return JsonResponse(response_dict)
-
-
-def monthly_date_labels(months_ago: int):
-    dates = []
-    current_date = datetime.utcnow().date()
-    current_year = current_date.year
-    current_month = current_date.month
-    dates.append(current_date)
-    for month in range(months_ago - 1):
-        if current_month == 1:
-            current_year -= 1
-            current_month = 12
-        else:
-            current_month -= 1
-        last_day = calendar.monthrange(current_year, current_month)[1]
-        current_date = current_date.replace(year=current_year, month=current_month, day=last_day)
-        dates.append(current_date)
-
-    return [date.strftime("%b %Y") for date in dates][::-1]
 
 
 def repo_daily_json(request, days_ago: int = 30):
