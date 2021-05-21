@@ -4,9 +4,7 @@
 {% load static %}
 {% block script %}
     {{block.super}}
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    {{ hour_list|json_script:"hour_list" }}
-    <script src="{% static 'js/index.js' %}"></script>
+    <script src="{% static 'js/chart.js' %}"></script>
 {% endblock %}
 
 {% block style %}
