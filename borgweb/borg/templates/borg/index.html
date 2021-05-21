@@ -4,7 +4,7 @@
 
 {% block title %}Borg Summary{% endblock %}
 {% block script %}
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{% static 'js/chart-3.2.1.min.js' %}"></script>
     {{ hour_list|json_script:"hour_list" }}
     <script src="{% static 'js/index.js' %}"></script>
 {% endblock %}
