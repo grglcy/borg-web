@@ -1,36 +1,25 @@
-// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
 @import "./scss/functions";
 
-// 2. Include any default variable overrides here
+// default variable overrides
 $body-bg: #f0f8ff;
 
-// 3. Include remainder of required Bootstrap stylesheets
 @import "./scss/variables";
 @import "./scss/mixins";
 
+// custom maps
 $custom-colors: (
         "primary":    #a0c4ff,
-        "info":  #ffc6ff,
+        "info":       #ffc6ff,
         "success":    #caffbf,
-        "secondary":       #bdb2ff,
+        "secondary":  #bdb2ff,
         "warning":    #fdffb6,
         "danger":     #ffadad,
         "light":      #f8f9fa,
         "dark":       #212529
 );
-// Merge the maps
+
 $theme-colors: map-merge($theme-colors, $custom-colors);
-//$theme-colors: map-merge($theme-colors, $custom-colors);
 
-// 4. Include any optional Bootstrap components as you like
-//@import "./scss/root";
-//@import "./scss/reboot";
-//@import "./scss/type";
-//@import "./scss/images";
-//@import "./scss/containers";
-//@import "./scss/grid";
-//@import "./scss/nav";
-//@import "./scss/navbar";
-
-// 5. Add additional custom code here
 @import "./scss/bootstrap";
+
+// custom code
