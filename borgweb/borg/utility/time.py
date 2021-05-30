@@ -51,9 +51,23 @@ def subtract_months(p_date: datetime, offset):
 
     if new_date.month <= offset:
         offset -= new_date.month
-        return new_date.replace(month=12 - offset, year=new_date.year - 1)
+
+        year = new_date.year - 1
+        month = 12 - offset
+
+        last_day = calendar.monthrange(year, month)[1]
+        if new_date.day > last_day:
+            new_date = new_date.replace(day=last_day)
+
+        return new_date.replace(month=month, year=year)
     else:
-        return new_date.replace(month=new_date.month - months)
+        year = new_date.year
+        month = new_date.month - months
+
+        last_day = calendar.monthrange(year, month)[1]
+        if new_date.day > last_day:
+            new_date = new_date.replace(day=last_day)
+        return new_date.replace(month=month)
 
 
 def last_day_previous_months(months_ago: int):
