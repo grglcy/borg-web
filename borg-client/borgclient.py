@@ -21,7 +21,7 @@ class BorgClient(object):
         return self.__post(url, post_data).text
 
     def __post(self, url, post_data):
-        self.client.get(url=url, verify=False)
+        self.client.get(url=url)
         csrf_token = self.client.cookies['csrftoken']
 
         post_data['csrfmiddlewaretoken'] = csrf_token
@@ -30,8 +30,7 @@ class BorgClient(object):
         headers['X-CSRFToken'] = csrf_token
         headers['Referer'] = self.referer
 
-        post_responce = self.client.post(url=url, data=post_data, headers=headers,
-                                         verify=False)
+        post_responce = self.client.post(url=url, data=post_data, headers=headers)
         return post_responce
 
     def post_error(self, post_data):

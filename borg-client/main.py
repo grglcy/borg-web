@@ -4,7 +4,6 @@ import argparse
 from tables import Error, Repo, Archive, Cache
 import json
 from datetime import datetime
-import urllib3
 
 
 def main(args):
@@ -54,5 +53,4 @@ def get_args():
 
 
 if __name__ == "__main__":
-    urllib3.disable_warnings()
     main(get_args())
