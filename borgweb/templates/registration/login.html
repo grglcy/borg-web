@@ -3,53 +3,52 @@
 {% block title %}Login{% endblock %}
 {% load static %}
 {% block script %}
-    {{block.super}}
+    {{ block.super }}
 {% endblock %}
 
 {% block style %}
     {{ block.super }}
     body {
-            background-color: aliceblue;
-        }
+        background-color: aliceblue;
+    }
 
-        .vertical-center {
-            min-height: 60%;
-            min-height: 60vh;
+    .vertical-center {
+        min-height: 60%;
+        min-height: 60vh;
 
-            display: flex;
-            align-items: center;
-        }
-        form {
-            min-width: 300px;
-        }
+        display: flex;
+        align-items: center;
+    }
+    form {
+        min-width: 300px;
+    }
 {% endblock %}
 
 {% block body %}
 
-<div class="container vertical-center justify-content-center">
-    <div>
-    <h1 class="display-4 fw-normal align-bottom text-center">Log in</h1>
-      <form method="post" class="mx-auto pt-4">
-        {% csrf_token %}
-        <!--    <img class="mb-4" src="" alt="" width="" height="">-->
+    <div class="container vertical-center justify-content-center">
+        <div>
+            <h1 class="display-4 fw-normal align-bottom text-center">Log in</h1>
+            <form method="post" class="mx-auto pt-4">
+                {% csrf_token %}
+                <div class="shadow form-floating my-2">
+                    <input class="form-control" placeholder="Username" type="text" name="username" autofocus=""
+                           autocapitalize="none" autocomplete="username"
+                           maxlength="150" required="" id="{{ form.username.id_for_label }}">
+                    <label for="{{ form.username.id_for_label }}">Username</label>
 
-        <div class="shadow form-floating my-2">
-            <input class="form-control" placeholder="Username" type="text" name="username" autofocus=""
-                   autocapitalize="none" autocomplete="username"
-                   maxlength="150" required="" id="{{ form.username.id_for_label }}">
-            <label for="{{ form.username.id_for_label }}">Username</label>
+                </div>
+                <div class="shadow form-floating mb-4">
+                    <input class="form-control" placeholder="Password" type="password" name="password"
+                           autocomplete="current-password" required=""
+                           id="{{ form.password.id_for_label }}">
+                    <label for="{{ form.password.id_for_label }}">Password</label>
+                </div>
 
+                <button class="shadow w-100 btn btn-lg btn-secondary" type="submit">Log In</button>
+            </form>
         </div>
-        <div class="shadow form-floating mb-4">
-            <input class="form-control" placeholder="Password" type="password" name="password"
-                   autocomplete="current-password" required=""
-                   id="{{ form.password.id_for_label }}">
-            <label for="{{ form.password.id_for_label }}">Password</label>
-        </div>
+    </div>
 
-        <button class="shadow w-100 btn btn-lg btn-secondary" type="submit">Log In</button>
-    </form>
-        </divclass>
-</div>
 
 {% endblock %}
