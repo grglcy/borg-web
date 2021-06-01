@@ -11,7 +11,7 @@ DEBUG = False
 
 AXES_LOCKOUT_CALLABLE = "borg.views.axes"
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'george.ooo', 'borg.george.ooo']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'george.ooo', 'www.george.ooo', 'borg.george.ooo']
 
 AUTHENTICATION_BACKENDS = [
             'axes.backends.AxesBackend',
