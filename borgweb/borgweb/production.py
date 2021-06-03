@@ -7,15 +7,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = __SECRET_KEY
 
-DEBUG = False 
+DEBUG = False
 
 AXES_LOCKOUT_CALLABLE = "borg.views.axes"
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'george.ooo', 'www.george.ooo', 'borg.george.ooo']
+ALLOWED_HOSTS = ['127.0.0.1', 'borg.george.ooo']
 
 AUTHENTICATION_BACKENDS = [
-            'axes.backends.AxesBackend',
-            'django.contrib.auth.backends.ModelBackend',
+    'axes.backends.AxesBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 INSTALLED_APPS = [
@@ -70,7 +70,6 @@ DATABASES = {
     }
 }
 
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -96,24 +95,23 @@ USE_L10N = True
 
 USE_TZ = False
 
-
 STATICFILES_FINDERS = [
-            'django.contrib.staticfiles.finders.FileSystemFinder',
-            'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-            'compressor.finders.CompressorFinder'
-                    ]
-COMPRESS_PRECOMPILERS = (('text/x-scss', 'django_libsass.SassCompiler'),)
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder'
+]
 
 COMPRESS_ENABLED = True
 COMPRESS_OFFLINE = True
 LIBSASS_OUTPUT_STYLE = 'compressed'
+COMPRESS_PRECOMPILERS = (('text/x-scss', 'django_libsass.SassCompiler'),)
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'root')
 STATICFILES_DIRS = [
-            os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'static'),
 ]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -130,9 +128,7 @@ CACHES = {
     }
 }
 
-
 # security
 SESSION_COOKIE_SECURE = True
 SECURE_SSL_REDIRECT = True
 CSRF_COOKIE_SECURE = True
-
