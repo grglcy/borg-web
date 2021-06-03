@@ -17,18 +17,18 @@ cd "${0%/*}"
 
 print_action "Checking for existence of python venv"
 
-if ! source ./.venv/bin/activate; then
+if ! source ./venv/bin/activate; then
 	printf "No venv activation script\n"
-    if [ -d "./.venv" ]
+    if [ -d "./venv" ]
 	then
 		printf "Removing old venv\n"
-		rm -r ./.venv
+		rm -r ./venv
 	fi
 	printf "Creating new venv\n"
 	
-	# Create venv at ./.venv
-	virtualenv ./.venv --prompt "(borg-web) "
-	source ./.venv/bin/activate
+	# Create venv at ./venv
+	virtualenv ./venv --prompt "(borg-web) "
+	source ./venv/bin/activate
 fi
 
 print_action "Installing pip packages, this may take a while..."
