@@ -67,19 +67,6 @@
     </div>
     </div>
     {% endif %}
-    <div style="width: 600px;" class="repo-container shadow rounded bg-primary overflow-hidden">
-        <h2 class="h2">Paths</h2>
-    {% if location_list %}
-        {% for location in location_list %}
-        <dl class="att-label row ps-3">
-            <dt class="col-3">{{ location.label }}</dt>
-            <dd class="col-9">{{ location.short_description }}</dd>
-        </dl>
-        {% endfor %}
-    {% else %}
-        <h3 class="h3">None found</h3>
-    {% endif %}
-    </div>
 </div>
 {% endblock %}
 
