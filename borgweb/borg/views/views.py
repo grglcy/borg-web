@@ -1,14 +1,12 @@
 from django.shortcuts import render, get_object_or_404
-from ..models import Repo, Location
+from ..models import Repo
 
 
 def index(request):
     repo_list = Repo.objects.all()
-    location_list = Location.objects.all()
 
     context = {
         'repo_list': repo_list,
-        'location_list': location_list,
     }
     return render(request, 'borg/index.html', context)
 
