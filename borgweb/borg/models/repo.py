@@ -132,7 +132,7 @@ class Repo(models.Model):
         archives = []
         archive_queryset = self.archive_set.all()
         for date in dates:
-            date_archives = archive_queryset.filter(start__date=date).order_by('-start')
+            date_archives = archive_queryset.filter(start__date__lte=date).order_by('-start')
             if date_archives.exists():
                 archives.append(date_archives[0])
             else:
