@@ -4,8 +4,11 @@
 {% load static %}
 {% block script %}
     {{block.super}}
-    <script src="{% static 'js/chart.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.4.1/dist/chart.min.js"
+            integrity="sha256-GMN9UIJeUeOsn/Uq4xDheGItEeSpI5Hcfp/63GclDZk=" crossorigin="anonymous"></script>
     {{ hour_list|json_script:"hour_list" }}
+    <script src="{% static 'borg/js/chart.js' %}"></script>
+    <script src="{% static 'borg/js/repo.js' %}"></script>
 {% endblock %}
 
 {% block style %}
