@@ -11,7 +11,7 @@ def repo_json(request, repo_label):
     repo_dict = {'location': repo.location,
                  'latest_backup': repo.last_backup(),
                  'size': repo.size_string(),
-                 'recent_errors': "not implemented",
+                 'recent_errors': len(repo.recent_errors()),
                  'warning': repo.warning(),
                  'error': repo.error()}
     return JsonResponse(repo_dict)

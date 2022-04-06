@@ -74,10 +74,13 @@ class Repo(models.Model):
         size = self.size()
         return bytes_to_string(size)
 
-    def recent_errors(self, days: int = 7, limit: int = 3):
+    def recent_errors(self, days: int = 7, limit: int = None):
         days_ago = (datetime.utcnow() - timedelta(days=days))
         errors = self.label.errors.all().filter(time__gt=days_ago)
-        return errors[:limit]
+        if limit is None:
+            return errors
+        else:
+            return errors[:limit]
 
     def get_archive_days(self, count: int = 31):
         current_day = datetime.utcnow().day
