@@ -25,19 +25,17 @@ window.addEventListener("DOMContentLoaded", function () {
 
     $.getJSON(`/repo_list.json`, function (repo_list) {
         repo_list.labels.forEach(function (repo_label) {
-            console.log("got list")
             $.getJSON(`/repo/${repo_label}.json`, function (repo_json) {
-                console.log(`got ${repo_label}`)
                 inflateRepo(repo_json, repo_label, template, container);
             })
         });
     })
 
 
-    $.getJSON("repo_daily.json", function (json) {
-        draw_time_graph("daily_backup_size", json.repos, json.dates, json.units);
-    });
-    $.getJSON("repo_monthly.json", function (json) {
-        draw_time_graph("monthly_backup_size", json.repos, json.dates, json.units);
-    });
+    // $.getJSON("repo_daily.json", function (json) {
+    //     draw_time_graph("daily_backup_size", json.repos, json.dates, json.units);
+    // });
+    // $.getJSON("repo_monthly.json", function (json) {
+    //     draw_time_graph("monthly_backup_size", json.repos, json.dates, json.units);
+    // });
 }, false);
