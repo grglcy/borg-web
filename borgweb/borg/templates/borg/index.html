@@ -26,50 +26,18 @@
 {% endblock %}
 
 {% block body %}
-{% if repo_list %}
-<div class="grid mx-auto d-flex justify-content-center flex-wrap">
-    {% for repo in repo_list %}
-    <div style="width: 600px;" class="repo-container shadow rounded overflow-hidden
-                {% if repo.error %}bg-danger{% elif repo.warning %}bg-warning{% else %}bg-primary{% endif %}">
-        <div class="row me-1 overflow-hidden text-truncate">
-            <h2 class="h2"><a href="/repo/{{ repo.label }}">{{ repo.label }}</a>
-                <small class="text-muted"> {{ repo.location }}</small>
-            </h2>
-        </div>
-        <dl class="att-label row ps-3">
-            <dt class="col-4">Latest backup:</dt>
-            <dd class="col-8">{{ repo.last_backup }}</dd>
-        </dl>
-        <dl class="att-label row ps-3">
-            <dt class="col-4">Size:</dt>
-            <dd class="col-8">{{ repo.size_string }}</dd>
-        </dl>
-        {% if repo.recent_errors|length > 0 %}
-        <dl class="att-label row">
-            <dt class="col-12 h4">Recent errors:</dt>
-        </dl>
-        <dl class="att-label row ps-3">
-            {% for error in repo.recent_errors %}
-            <dt class="col-4">{{ error.time_ago }}</dt>
-            <dd class="col-8 text-truncate">{{ error.error }}</dd>
-            {% endfor %}
-        {% endif %}
-        </dl>
-    </div>
-    {% endfor %}
+<div id="repo-container" class="grid mx-auto d-flex justify-content-center flex-wrap">
     <div style="width: 600px;" class="repo-container shadow rounded bg-info overflow-hidden">
         <canvas id="daily_backup_size" width="400" height="200"></canvas>
     </div>
     <div style="width: 600px;" class="repo-container shadow rounded bg-info overflow-hidden">
         <canvas id="monthly_backup_size" width="400" height="200"></canvas>
     </div>
-    {% else %}
-    <div style="width: 600px;" class="repo-container shadow rounded bg-primary overflow-hidden">
-        <div style="width: 600px;" class="repo-container bg-primary overflow-hidden">
-        <h2 class="h2">No repositories found</h2>
+{#    <div style="width: 600px;" class="repo-container shadow rounded bg-primary overflow-hidden">#}
+{#        <div style="width: 600px;" class="repo-container bg-primary overflow-hidden">#}
+{#        <h2 class="h2">No repositories found</h2>#}
+{#    </div>#}
     </div>
-    </div>
-    {% endif %}
 </div>
 {% endblock %}
 
