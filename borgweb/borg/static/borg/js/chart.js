@@ -5,7 +5,7 @@ function draw_time_graph(chartID, repos, dateLabels, sizeUnits) {
             label: repo.label,
             data: repo.size,
             fill: false,
-            borderColor: 'rgb(75, 192, 192)'
+            borderColor: 'rgb(7, 59, 76)'
         });
     })
 

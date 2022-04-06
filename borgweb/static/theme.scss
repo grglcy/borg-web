@@ -1,24 +1,29 @@
 @import "./scss/functions";
 
 // default variable overrides
-$body-bg: #f0f8ff;
+// $body-bg: #f0f8ff;
+$enable-gradients: True;
 
 @import "./scss/variables";
 @import "./scss/mixins";
 
-// custom maps
 $custom-colors: (
-        "primary":    #a0c4ff,
-        "info":       #ffc6ff,
-        "success":    #caffbf,
-        "secondary":  #bdb2ff,
-        "warning":    #fdffb6,
-        "danger":     #ffadad,
-        "light":      #f8f9fa,
-        "dark":       #212529
+        "primary":    #ffd166,
+        "secondary":  #ffff97,
+        "tertiary":   #eee4e1,
+        "info":       #118AB2,
+        "success":    #06D6A0,
+        "warning":    #ffab66,
+        "danger":     #EF476F,
+        "light":      #f8f7f9,
+        "dark":       #073B4C
 );
 
 $theme-colors: map-merge($theme-colors, $custom-colors);
+
+$body-color: map-get($custom-colors, "dark");
+$navbar-light-color:  rgba(map-get($custom-colors, "dark"), .50);
+$navbar-light-active-color: map-get($custom-colors, "dark");
 
 @import "./scss/bootstrap";
 
