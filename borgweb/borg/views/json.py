@@ -9,7 +9,7 @@ from ..utility.time import last_day_previous_months
 def repo_json(request, repo_label):
     repo = get_object_or_404(Repo, label__label=repo_label)
     repo_dict = {'location': repo.location,
-                 'latest_backup': repo.last_backup(),
+                 'latest_backup': "repo.last_backup()",
                  'size': repo.size_string(),
                  'recent_errors': "not implemented",
                  'warning': repo.warning(),
