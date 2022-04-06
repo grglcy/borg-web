@@ -1,8 +1,12 @@
 from datetime import datetime, timedelta
 from django.http import JsonResponse
-from ..models import Repo
+from ..models import Repo, Label
 from ..utility import data
 from ..utility.time import last_day_previous_months
+
+
+def repo_list(request):
+    return JsonResponse({'labels': [repo.label.label for repo in Repo.objects.all()]})
 
 
 def repo_monthly_json(request, months_ago: int = 12):
