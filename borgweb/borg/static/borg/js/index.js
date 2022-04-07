@@ -5,6 +5,7 @@ function inflateRepo(repo_json, label, template_id, container_id) {
     $(template_copy).find(".repo-latest-backup").html(repo_json.latest_backup);
     $(template_copy).find(".repo-size").html(repo_json.size);
     $(template_copy).find(".repo-recent-errors").html(repo_json.recent_errors);
+    $(template_copy).find(".repo-size-graph").prop("id", `repo-${label}-size-graph`);
 
     let bg_class = "bg-primary";
     if (repo_json.error) {
