@@ -17,6 +17,26 @@ def repo_json(request, repo_label):
     return JsonResponse(repo_dict)
 
 
+def repo_size_json(request, repo_label, months_ago: int = 12):
+    repo = get_object_or_404(Repo, label__label=repo_label)
+
+    date_labels = [date.strftime("%b %Y") for date in last_day_previous_months(months_ago)]
+
+    max_unit = get_units([repo])
+
+    repo_dict = {"id": repo.id,
+                 "label": repo.label.label,
+                 "size": repo.size_on_months(max_unit, months_ago)}
+
+    response_dict = {
+        "dates": date_labels,
+        "repo": repo_dict,
+        "units": max_unit
+    }
+
+    return JsonResponse(response_dict)
+
+
 def repo_list_json(request):
     return JsonResponse({'labels': [repo.label.label for repo in Repo.objects.all()]})
 
@@ -70,4 +90,3 @@ def get_units(repo_list):
     max_repo_size = max(repo.latest_archive().cache.unique_csize for repo in repo_list)
     _, max_unit = data.convert_bytes(max_repo_size)
     return max_unit
-
