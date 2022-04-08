@@ -15,29 +15,68 @@
 {% block style %}
     {{ block.super }}
     .repo-container {
-        padding: 8px;
-        margin: 8px;
+    padding: 8px;
+    margin: 8px;
     }
 
     .att-label {
-        margin-top: 4px;
-        margin-bottom: 4px;
+    margin-top: 4px;
+    margin-bottom: 4px;
     }
 {% endblock %}
 
 {% block body %}
-<div id="repo-container" class="grid mx-auto d-flex justify-content-center flex-wrap">
-{#    <div style="width: 600px;" class="repo-container shadow rounded bg-info overflow-hidden">#}
-{#        <canvas id="daily_backup_size" width="400" height="200"></canvas>#}
-{#    </div>#}
-{#    <div style="width: 600px;" class="repo-container shadow rounded bg-info overflow-hidden">#}
-{#        <canvas id="monthly_backup_size" width="400" height="200"></canvas>#}
-{#    </div>#}
-{#    <div style="width: 600px;" class="repo-container shadow rounded bg-primary overflow-hidden">#}
-{#        <div style="width: 600px;" class="repo-container bg-primary overflow-hidden">#}
-{#        <h2 class="h2">No repositories found</h2>#}
-{#    </div>#}
-    </div>
+    {% if repo_list %}
+        <div id="repo-container" class="grid mx-auto d-flex justify-content-center flex-wrap">
+        {% for repo in repo_list %}
+            <div style="width: 600px;" id="repo-{{ repo.label }}" class="repo-container shadow rounded overflow-hidden bg-primary">
+                <div class="row me-1 overflow-hidden text-truncate">
+                    <h2 class="h2"><span class="repo-label">{{ repo.label }}</span>
+                        <small class="repo-location text-muted">{{ repo.location }}</small>
+                    </h2>
+                </div>
+                <dl class="att-label row ps-3">
+                    <dt class="col-4">Latest backup:</dt>
+                    <dd class="repo-latest-backup col-8"></dd>
+                </dl>
+                <dl class="att-label row ps-3">
+                    <dt class="col-4">Size:</dt>
+                    <dd class="repo-size col-8"></dd>
+                </dl>
+                <dl class="att-label row ps-3">
+                    <dt class="col-4">Recent errors:</dt>
+                    <dd class="repo-recent-errors col-8"></dd>
+                </dl>
+                <canvas id="repo-{{ repo.label }}-size-graph" width="400" height="200"></canvas>
+                </dl>
+            </div>
+        {% endfor %}
+{#        <div style="width: 600px;" class="repo-container shadow rounded bg-info overflow-hidden">#}
+{#            <canvas id="daily_backup_size" width="400" height="200"></canvas>#}
+{#        </div>#}
+{#        <div style="width: 600px;" class="repo-container shadow rounded bg-info overflow-hidden">#}
+{#            <canvas id="monthly_backup_size" width="400" height="200"></canvas>#}
+{#        </div>#}
+    {% else %}
+        <div style="width: 600px;" class="repo-container shadow rounded bg-primary overflow-hidden">
+            <div style="width: 600px;" class="repo-container bg-primary overflow-hidden">
+                <h2 class="h2">No repositories found</h2>
+            </div>
+        </div>
+    {% endif %}
 </div>
+    {#<div id="repo-container" class="grid mx-auto d-flex justify-content-center flex-wrap">#}
+    {#    <div style="width: 600px;" class="repo-container shadow rounded bg-info overflow-hidden">#}
+    {#        <canvas id="daily_backup_size" width="400" height="200"></canvas>#}
+    {#    </div>#}
+    {#    <div style="width: 600px;" class="repo-container shadow rounded bg-info overflow-hidden">#}
+    {#        <canvas id="monthly_backup_size" width="400" height="200"></canvas>#}
+    {#    </div>#}
+    {#    <div style="width: 600px;" class="repo-container shadow rounded bg-primary overflow-hidden">#}
+    {#        <div style="width: 600px;" class="repo-container bg-primary overflow-hidden">#}
+    {#        <h2 class="h2">No repositories found</h2>#}
+    {#    </div>#}
+    {#    </div>#}
+    {#</div>#}
 {% endblock %}
 

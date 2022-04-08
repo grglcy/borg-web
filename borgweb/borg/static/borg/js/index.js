@@ -1,11 +1,11 @@
 function inflateRepo(repo_json, label, template_id, container_id) {
-    const template_copy = $(template_id).clone();
-    $(template_copy).find(".repo-label").html(label);
-    $(template_copy).find(".repo-location").html(repo_json.location);
-    $(template_copy).find(".repo-latest-backup").html(repo_json.latest_backup);
-    $(template_copy).find(".repo-size").html(repo_json.size);
-    $(template_copy).find(".repo-recent-errors").html(repo_json.recent_errors);
-    $(template_copy).find(".repo-size-graph").prop("id", `repo-${label}-size-graph`);
+    const repoLabel = `#repo-${label}`
+
+    $(container_id).find(repoLabel).find(".repo-latest-backup").html(repo_json.latest_backup);
+    $(container_id).find(repoLabel).find(".repo-size").html(repo_json.size);
+    $(container_id).find(repoLabel).find(".repo-recent-errors").html(repo_json.recent_errors);
+
+    $(container_id).find(repoLabel).removeClass("bg-primary");
 
     let bg_class = "bg-primary";
     if (repo_json.error) {
@@ -13,9 +13,7 @@ function inflateRepo(repo_json, label, template_id, container_id) {
     } else if (repo_json.warning) {
         bg_class = "bg-warning";
     }
-    $(template_copy).addClass(bg_class);
-
-    $(container_id).append(template_copy);
+    $(container_id).find(repoLabel).addClass(bg_class);
 }
 
 

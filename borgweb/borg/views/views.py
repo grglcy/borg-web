@@ -3,7 +3,12 @@ from ..models import Repo
 
 
 def index(request):
-    return render(request, 'borg/index.html', {})
+    repo_list = Repo.objects.all()
+
+    context = {
+        'repo_list': repo_list,
+    }
+    return render(request, 'borg/index.html', context)
 
 
 def repo(request, repo_label: str):
