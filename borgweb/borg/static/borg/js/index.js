@@ -26,15 +26,12 @@ window.addEventListener("DOMContentLoaded", function () {
         repo_list.labels.forEach(function (repo_label) {
             $.getJSON(`/repo/${repo_label}.json`, function (repo_json) {
                 inflateRepo(repo_json, repo_label, template, container);
-                inflateSizeGraph()
             })
 
-            function inflateSizeGraph() {
-                $.getJSON(`/repo/${repo_label}/size.json`, function (repo_size_json) {
-                    draw_time_series_graph(`repo-${repo_label}-size-graph`, repo_size_json.repo,
-                        repo_size_json.dates, repo_size_json.units);
-                })
-            }
+            $.getJSON(`/repo/${repo_label}/size.json`, function (repo_size_json) {
+                draw_time_series_graph(`repo-${repo_label}-size-graph`, repo_size_json.repo,
+                    repo_size_json.dates, repo_size_json.units);
+            })
 
         });
     })
