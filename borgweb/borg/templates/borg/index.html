@@ -7,7 +7,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.4.1/dist/chart.min.js"
             integrity="sha256-GMN9UIJeUeOsn/Uq4xDheGItEeSpI5Hcfp/63GclDZk=" crossorigin="anonymous"></script>
     {% include "borg/repo-template.html" %}
-    {{ hour_list|json_script:"hour_list" }}
     <script src="{% static 'borg/js/chart.js' %}"></script>
     <script src="{% static 'borg/js/index.js' %}"></script>
 {% endblock %}
@@ -24,7 +23,6 @@
     margin-bottom: 4px;
     }
 {% endblock %}
-
 {% block body %}
     {% if repo_list %}
         <div id="repo-container" class="grid mx-auto d-flex justify-content-center flex-wrap">
