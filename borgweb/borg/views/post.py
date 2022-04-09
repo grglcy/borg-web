@@ -98,6 +98,6 @@ def post_location(request):
 
             return HttpResponseRedirect(reverse('index'))
     else:
-        form = LocationForm ()
+        form = LocationForm()
 
     return render(request, 'borg/post/location.html', {'form': form})
