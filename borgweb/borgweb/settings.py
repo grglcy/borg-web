@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'borgweb.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'borg.sqlite',
+        'NAME': BASE_DIR / 'borg.db',
     }
 }
 
