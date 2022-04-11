@@ -11,25 +11,15 @@ class Repo(models.Model):
     last_modified = models.DateTimeField()
     label = models.OneToOneField(Label, on_delete=models.CASCADE, unique=True)
 
-    def warning(self):
-        if self.error():
-            return True
-        else:
-            latest_archive = self.latest_archive()
-            if latest_archive.start > datetime.utcnow() - timedelta(hours=2):
-                return False
-            else:
-                return True
+    def warning(self, hours_ago=2):
+        return not self.latest_archive().start > datetime.utcnow() - timedelta(hours=hours_ago)
 
-    def error(self):
+    def error(self, hours_ago=4):
         latest_archive = self.latest_archive()
         if latest_archive is None or not self.archive_after_latest_error():
             return True
 
-        if latest_archive.start > datetime.utcnow() - timedelta(hours=4):
-            return False
-        else:
-            return True
+        return not latest_archive.start > datetime.utcnow() - timedelta(hours=hours_ago)
 
     def archive_after_latest_error(self):
         latest_archive = self.latest_archive()
