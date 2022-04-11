@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import DateTimeField
+from django.db.models.functions import Trunc
 from datetime import datetime, timedelta
 from ..utility.time import seconds_to_string, subtract_months
 from ..utility.data import bytes_to_string, convert_bytes
@@ -109,16 +111,16 @@ class Repo(models.Model):
 
     def monthly_archives(self, n_months: int = 12):
         archives = []
-        for month in range(n_months):
-            current_date = subtract_months(datetime.utcnow(), month)
-            archive_current_month = self.archive_set.all() \
-                .filter(start__year=current_date.year,
-                        start__month=current_date.month) \
-                .order_by('-start')
-            if len(archive_current_month) > 0:
-                archives.append(archive_current_month[0])
-            else:
-                archives.append(None)
+        archive_set = self.archive_set.all().order_by('-start')
+
+        current_date = datetime.utcnow()
+        for archive in archive_set:
+            if len(archives) >= n_months:
+                break
+            if archive.start.year == current_date.year and archive.start.month == current_date.month:
+                archives.append(archive)
+                current_date = subtract_months(current_date, 1)
+
         return archives[::-1]
 
     def archives_on_dates(self, dates: list):
@@ -136,9 +138,9 @@ class Repo(models.Model):
         archives = []
         for hour in range(n_hours):
             current_hour = datetime.utcnow() - timedelta(hours=hour)
-            archives_hour = self.archive_set.all()\
-                .filter(start__date=current_hour.date())\
-                .filter(start__hour=current_hour.hour)\
+            archives_hour = self.archive_set.all() \
+                .filter(start__date=current_hour.date()) \
+                .filter(start__hour=current_hour.hour) \
                 .order_by('-start')
             if len(archives_hour) > 0:
                 archives.append(archives_hour[0])

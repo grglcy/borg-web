@@ -10,7 +10,7 @@ urlpatterns = [
     path('repo-list.json', cache_page(60)(views.repo_list_json), name='repo list'),
 
     # Repo
-    path('repo/<str:repo_label>/monthly-size.json', cache_page(3600)(views.repo_monthly_size_json),
+    path('repo/<str:repo_label>/monthly-size.json', cache_page(60)(views.repo_monthly_size_json),
          name='repo size time series'),
     path('repo/<str:repo_label>.json', cache_page(60)(views.repo_json), name='repo json'),
     path('repo/<str:repo_label>/latest-backup.json', cache_page(60)(views.repo_latest_backup_json), name='repo json'),
