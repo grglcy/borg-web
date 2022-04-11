@@ -14,14 +14,17 @@ function colourRepo(repo_json, label, container_id) {
 
 
 window.addEventListener("DOMContentLoaded", function () {
-    // todo: inflate each repo and colour background accordingly
-    const container = $('#repo-container');
-
     $('[data-json-string-request]').each(function (index, element) {
         $.getJSON($(this).attr("data-json-string-request"), function (data) {
+            console.log(index);
             $(element).html(data['data']);
         })
     });
+
+}, false);
+
+window.addEventListener("DOMContentLoaded", function () {
+    const container = $('#repo-container');
 
     $.getJSON(`/repo-list.json`, function (repo_list) {
         repo_list.labels.forEach(function (repo_label) {
