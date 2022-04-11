@@ -8,13 +8,24 @@ from ..utility.time import last_day_previous_months
 
 def repo_json(request, repo_label):
     repo = get_object_or_404(Repo, label__label=repo_label)
-    repo_dict = {'location': repo.location,
-                 'latest_backup': repo.last_backup(),
-                 'size': repo.size_string(),
-                 'recent_errors': len(repo.recent_errors()),
-                 'warning': repo.warning(),
+    repo_dict = {'warning': repo.warning(),
                  'error': repo.error()}
     return JsonResponse(repo_dict)
+
+
+def repo_latest_backup_json(request, repo_label):
+    repo = get_object_or_404(Repo, label__label=repo_label)
+    return JsonResponse({"data": repo.last_backup()})
+
+
+def repo_size_json(request, repo_label):
+    repo = get_object_or_404(Repo, label__label=repo_label)
+    return JsonResponse({"data": repo.size_string()})
+
+
+def repo_recent_errors_json(request, repo_label):
+    repo = get_object_or_404(Repo, label__label=repo_label)
+    return JsonResponse({"data": len(repo.recent_errors())})
 
 
 def repo_monthly_size_json(request, repo_label, months_ago: int = 12):

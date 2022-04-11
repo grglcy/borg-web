@@ -8,12 +8,16 @@ urlpatterns = [
     path('', cache_page(60)(views.index), name='index'),
     path('repo/<str:repo_label>', cache_page(60)(views.repo), name='repo'),
 
-    path('repo_list.json', cache_page(60)(views.repo_list_json), name='repo list'),
+    path('repo-list.json', cache_page(60)(views.repo_list_json), name='repo list'),
 
     # Repo
     path('repo/<str:repo_label>/monthly-size.json', cache_page(3600)(views.repo_monthly_size_json),
          name='repo size time series'),
     path('repo/<str:repo_label>.json', cache_page(60)(views.repo_json), name='repo json'),
+    path('repo/<str:repo_label>/latest-backup.json', cache_page(60)(views.repo_latest_backup_json), name='repo json'),
+    path('repo/<str:repo_label>/size.json', cache_page(60)(views.repo_size_json), name='repo size json'),
+    path('repo/<str:repo_label>/recent-errors.json', cache_page(60)(views.repo_recent_errors_json),
+         name='repo recent errors json'),
 
     # POST
     path('post/repo', views.post_repo, name='post repo'),
