@@ -1,10 +1,10 @@
 function draw_time_series_graph(chartID, repo, dateLabels, sizeUnits) {
     let datasets = [{
-            label: repo.label,
-            data: repo.size,
-            fill: false,
-            borderColor: 'rgb(7, 59, 76)'
-        }]
+        label: repo.label,
+        data: repo.size,
+        fill: false,
+        borderColor: 'rgb(7, 59, 76)'
+    }]
 
     const data = {
         labels: dateLabels,
@@ -27,7 +27,10 @@ function draw_time_series_graph(chartID, repo, dateLabels, sizeUnits) {
                             }
                         }
                     }
-                }
+                },
+                legend: {
+                    display: false
+                },
             },
             scales: {
                 y: {
