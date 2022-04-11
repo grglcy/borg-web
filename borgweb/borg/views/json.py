@@ -17,7 +17,7 @@ def repo_json(request, repo_label):
     return JsonResponse(repo_dict)
 
 
-def repo_size_json(request, repo_label, months_ago: int = 12):
+def repo_monthly_size_json(request, repo_label, months_ago: int = 12):
     repo = get_object_or_404(Repo, label__label=repo_label)
 
     date_labels = [date.strftime("%b %Y") for date in last_day_previous_months(months_ago)]

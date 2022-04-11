@@ -28,7 +28,7 @@ window.addEventListener("DOMContentLoaded", function () {
                 inflateRepo(repo_json, repo_label, template, container);
             })
 
-            $.getJSON(`/repo/${repo_label}/size.json`, function (repo_size_json) {
+            $.getJSON(`/repo/${repo_label}/monthly-size.json`, function (repo_size_json) {
                 draw_time_series_graph(`repo-${repo_label}-size-graph`, repo_size_json.repo,
                     repo_size_json.dates, repo_size_json.units);
             })
