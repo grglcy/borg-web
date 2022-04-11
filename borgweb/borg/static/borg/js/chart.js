@@ -1,19 +1,19 @@
-function draw_time_series_graph(chartID, repo, dateLabels, sizeUnits) {
+function draw_time_series_graph(canvas, data) {
     let datasets = [{
-        label: repo.label,
-        data: repo.size,
+        label: data.label,
+        data: data.size,
         fill: false,
         borderColor: 'rgb(7, 59, 76)'
     }]
 
-    const data = {
-        labels: dateLabels,
+    const graphData = {
+        labels: data.dates,
         datasets: datasets
     };
 
     const config = {
         type: 'line',
-        data,
+        data: graphData,
         options: {
             plugins: {
                 tooltip: {
@@ -21,7 +21,7 @@ function draw_time_series_graph(chartID, repo, dateLabels, sizeUnits) {
                         label: function (context) {
                             const yValue = context.parsed.y
                             if (yValue !== null) {
-                                return `${yValue} ${sizeUnits}`
+                                return `${yValue} ${data.units}`
                             } else {
                                 return ""
                             }
@@ -44,7 +44,7 @@ function draw_time_series_graph(chartID, repo, dateLabels, sizeUnits) {
                     },
                     ticks: {
                         callback: function (value, index, values) {
-                            return `${value} ${sizeUnits}`
+                            return `${value} ${data.units}`
                         }
                     }
                 }
@@ -52,69 +52,8 @@ function draw_time_series_graph(chartID, repo, dateLabels, sizeUnits) {
         }
     }
 
-    var newChart = new Chart(
-        document.getElementById(chartID),
-        config
-    );
-}
-
-
-function draw_time_graph(chartID, repos, dateLabels, sizeUnits) {
-    let datasets = []
-    repos.forEach(function (repo) {
-        datasets.push({
-            label: repo.label,
-            data: repo.size,
-            fill: false,
-            borderColor: 'rgb(7, 59, 76)'
-        });
-    })
-
-    const data = {
-        labels: dateLabels,
-        datasets: datasets
-    };
-
-    const config = {
-        type: 'line',
-        data,
-        options: {
-            plugins: {
-                tooltip: {
-                    callbacks: {
-                        label: function (context) {
-                            const yValue = context.parsed.y
-                            if (yValue !== null) {
-                                return `${yValue} ${sizeUnits}`
-                            } else {
-                                return ""
-                            }
-                        }
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    min: 0,
-                    title: {
-                        display: true,
-                        text: "Compressed Size",
-                        font: {
-                            size: 18
-                        }
-                    },
-                    ticks: {
-                        callback: function (value, index, values) {
-                            return `${value} ${sizeUnits}`
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    var newChart = new Chart(
-        document.getElementById(chartID),
+    const newGraph = new Chart(
+        canvas,
         config
     );
 }

@@ -35,14 +35,10 @@ def repo_monthly_size_json(request, repo_label, months_ago: int = 12):
 
     max_unit = get_units([repo])
 
-    repo_dict = {"id": repo.id,
-                 "label": repo.label.label,
-                 "size": repo.size_on_months(max_unit, months_ago)}
-
     response_dict = {
         "dates": date_labels,
-        "repo": repo_dict,
-        "units": max_unit
+        "units": max_unit,
+        "size": repo.size_on_months(max_unit, months_ago)
     }
 
     return JsonResponse(response_dict)

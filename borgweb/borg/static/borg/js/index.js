@@ -16,7 +16,17 @@ function stringRequests() {
     $('[data-json-string-request]').each(function (index, element) {
         $.getJSON($(this).attr("data-json-string-request"), function (data) {
             $(element).html(data['data']);
-        })
+        });
+    });
+}
+
+function graphRequests() {
+    $('[data-json-graph-request]').each(function (index, element) {
+        $.getJSON($(this).attr("data-json-graph-request"), function (data) {
+            let newGraph = $('<canvas/>').width(400).height(200);
+            draw_time_series_graph(newGraph, data)
+            $(element).html(newGraph);
+        });
     });
 }
 
@@ -25,23 +35,14 @@ function colourRepos(repo_list) {
     repo_list.labels.forEach(function (repo_label) {
         $.getJSON(`/repo/${repo_label}.json`, function (repo_json) {
             colourRepo(repo_json, repo_label, container);
-        })
-    });
-}
-
-function createGraphs(repo_list) {
-    repo_list.labels.forEach(function (repo_label) {
-        $.getJSON(`/repo/${repo_label}/monthly-size.json`, function (repo_size_json) {
-            draw_time_series_graph(`repo-${repo_label}-size-graph`, repo_size_json.repo,
-                repo_size_json.dates, repo_size_json.units);
-        })
+        });
     });
 }
 
 window.addEventListener("DOMContentLoaded", function () {
     setTimeout(stringRequests, 0);
+    setTimeout(graphRequests, 0);
     $.getJSON(`/repo-list.json`, function (repo_list) {
-        setTimeout(createGraphs.bind(null, repo_list), 0);
         setTimeout(colourRepos.bind(null, repo_list), 0);
     });
 }, false);

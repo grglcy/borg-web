@@ -58,8 +58,12 @@
                         </div>
                     </dd>
                 </dl>
-                <canvas id="repo-{{ repo.label }}-size-graph" width="400" height="200"></canvas>
-                </dl>
+                <div id="repo-{{ repo.label }}-size-graph"
+                     class="d-flex justify-content-center"
+                     data-json-graph-request="/repo/{{ repo.label }}/monthly-size.json">
+                    <div class="spinner-border" role="status">
+                    </div>
+                </div>
             </div>
         {% endfor %}
     {% else %}
