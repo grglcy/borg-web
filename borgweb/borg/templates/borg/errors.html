@@ -1,0 +1,35 @@
+{% extends "borg/base.html" %}
+{% load cache %}
+{% load static %}
+
+{% block title %}{{ repo.label }} errors{% endblock %}
+{% block script %}
+{% endblock %}
+
+{% block style %}
+    {{ block.super }}
+    .error-container {
+    padding: 8px;
+    margin: 8px;
+    }
+{% endblock %}
+{% block body %}
+    {% if errors %}
+        <div class="error-container" class="grid justify-content-left">
+        <ul class="att-label row ps-3 col-11">
+            {% for error in errors %}
+                <li class="shadow rounded overflow-hidden bg-primary m-1">
+                    <span>{{ error.error }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div style="width: 600px;" class="error-container shadow rounded bg-primary overflow-hidden">
+            <div style="width: 600px;" class="error-container bg-primary overflow-hidden">
+                <h2 class="h2">No errors found</h2>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+

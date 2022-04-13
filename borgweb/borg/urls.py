@@ -20,6 +20,7 @@ urlpatterns = [
 
     # Repo page
     path('repo/<str:repo_label>', cache_page(60)(views.repo), name='repo'),
+    path('repo/<str:repo_label>/errors', cache_page(60)(views.repo_errors), name='repo'),
 
     # POST
     path('post/repo', views.post_repo, name='post repo'),
