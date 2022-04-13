@@ -1,6 +1,4 @@
 from django.db import models
-from django.db.models import DateTimeField
-from django.db.models.functions import Trunc
 from datetime import datetime, timedelta
 from ..utility.time import seconds_to_string, subtract_months
 from ..utility.data import bytes_to_string, convert_bytes
