@@ -5,7 +5,28 @@ from django.urls import reverse
 from django.contrib.auth.decorators import permission_required
 from django.core.cache import cache
 from ..models import Repo, Label, Archive, Cache, Error, Location
-from ..forms import RepoForm, ArchiveForm, ErrorForm, LocationForm
+from ..forms import RepoForm, ArchiveForm, ErrorForm, LocationForm, ToggleVisibility
+
+
+@permission_required("borg.change_repo")
+def toggle_visibility(request):
+    if request.method == 'POST':
+        form = ToggleVisibility(request.POST)
+        if form.is_valid():
+            cdata = form.cleaned_data
+
+            label = get_object_or_404(Label, label=cdata['label'])
+
+            label.visible = not label.visible
+
+            label.save()
+            cache.clear()
+
+            return HttpResponseRedirect(reverse('index'))
+    else:
+        form = ToggleVisibility()
+
+    return render(request, 'borg/post/toggle.html', {'form': form})
 
 
 @permission_required("borg.add_repo")

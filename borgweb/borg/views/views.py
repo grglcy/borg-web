@@ -4,7 +4,7 @@ from ..models import Repo
 
 
 def index(request):
-    repo_list = Repo.objects.all()
+    repo_list = Repo.objects.filter(label__visible=True)
 
     context = {
         'repo_list': repo_list,

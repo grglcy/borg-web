@@ -24,6 +24,7 @@ urlpatterns = [
 
     # POST
     path('post/repo', views.post_repo, name='post repo'),
+    path('post/toggle', views.toggle_visibility, name='toggle repo visibility'),
     path('post/archive', views.post_archive, name='post archive'),
     path('post/error', views.post_error, name='post error'),
     path('post/location', views.post_location, name='post location'),
