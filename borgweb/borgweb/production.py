@@ -10,6 +10,8 @@ SECRET_KEY = __SECRET_KEY
 
 DEBUG = False
 
+AXES_META_PRECEDENCE_ORDER = ('HTTP_X_FORWARDED_FOR', 'X_FORWARDED_FOR', 'REMOTE_ADDR')
+
 AXES_LOCKOUT_CALLABLE = "borg.views.axes"
 
 ALLOWED_HOSTS = ['127.0.0.1', 'borg.george.ooo', 'george.ooo', 'www.george.ooo', '10.10.10.100', 'proxy.george.ooo']
