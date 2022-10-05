@@ -20,7 +20,7 @@ def toggle_visibility(request):
             label.visible = not label.visible
 
             label.save()
-            cache.clear()
+            #cache.clear()
 
             return HttpResponseRedirect(reverse('index'))
     else:
@@ -49,7 +49,7 @@ def post_repo(request):
                                                                         'last_modified': cdata['last_modified'],
                                                                         'label': label})
             repo.save()
-            cache.clear()
+            #cache.clear()
 
             return HttpResponseRedirect(reverse('index'))
     else:
@@ -78,7 +78,7 @@ def post_archive(request):
 
             archive = Archive(**archive_dict, repo=repo, cache=cache)
             archive.save()
-            cache.clear()
+            #cache.clear()
 
             return HttpResponseRedirect(reverse('index'))
     else:
@@ -97,7 +97,7 @@ def post_error(request):
 
             error = Error(label=label, error=cdata['error'], time=cdata['time'])
             error.save()
-            cache.clear()
+            #cache.clear()
 
             return HttpResponseRedirect(reverse('index'))
     else:
@@ -115,7 +115,7 @@ def post_location(request):
             label, _ = Location.objects.get_or_create(label=cdata['label'],
                                                       defaults={"path": cdata["path"]})
             label.save()
-            cache.clear()
+            #cache.clear()
 
             return HttpResponseRedirect(reverse('index'))
     else:
