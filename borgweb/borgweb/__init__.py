@@ -1,1 +1,1 @@
-from .secrets import SECRET_KEY
+from .secrets import SECRET_KEY, DATABASE_PASSWORD

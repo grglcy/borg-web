@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 
 from . import SECRET_KEY as __SECRET_KEY
+from . import DATABASE_PASSWORD as __DATABASE_PASSWORD
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -11,7 +12,7 @@ DEBUG = False
 
 AXES_LOCKOUT_CALLABLE = "borg.views.axes"
 
-ALLOWED_HOSTS = ['127.0.0.1', 'borg.george.ooo', 'george.ooo', 'www.george.ooo']
+ALLOWED_HOSTS = ['127.0.0.1', 'borg.george.ooo', 'george.ooo', 'www.george.ooo', '10.10.10.100', 'proxy.george.ooo']
 
 AUTHENTICATION_BACKENDS = [
     'axes.backends.AxesBackend',
@@ -65,8 +66,12 @@ WSGI_APPLICATION = 'borgweb.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': "/home/web/sites/db/borg.db",
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'borgweb',
+        'USER': 'borgweb',
+        'PASSWORD': __DATABASE_PASSWORD,
+        'HOST': 'db.george.ooo',
+        'PORT': '5432',
     }
 }
 
