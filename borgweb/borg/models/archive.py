@@ -8,9 +8,9 @@ class Archive(models.Model):
     name = models.TextField()
     start = models.DateTimeField()
     end = models.DateTimeField()
-    file_count = models.IntegerField()
-    original_size = models.IntegerField()
-    compressed_size = models.IntegerField()
-    deduplicated_size = models.IntegerField()
+    file_count = models.BigIntegerField()
+    original_size = models.BigIntegerField()
+    compressed_size = models.BigIntegerField()
+    deduplicated_size = models.BigIntegerField()
     cache = models.OneToOneField(Cache, on_delete=models.CASCADE)
 
