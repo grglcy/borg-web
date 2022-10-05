@@ -7,6 +7,10 @@ from django.core.cache import cache as django_cache
 from ..models import Repo, Label, Archive, Cache, Error, Location
 from ..forms import RepoForm, ArchiveForm, ErrorForm, LocationForm, ToggleVisibility
 
+import logging
+
+logger = logging.getLogger(__file__)
+
 
 @permission_required("borg.change_repo")
 def toggle_visibility(request):
@@ -63,22 +67,25 @@ def post_archive(request):
     if request.method == 'POST':
         form = ArchiveForm(request.POST)
         if form.is_valid():
-            cdata = form.cleaned_data
+            try:
+                cdata = form.cleaned_data
 
-            repo = get_object_or_404(Repo, label__label=cdata['label'])
+                repo = get_object_or_404(Repo, label__label=cdata['label'])
 
-            cache_dict = {k: cdata[k] for k in ('total_chunks', 'total_csize', 'total_size',
-                                                'total_unique_chunks', 'unique_csize', 'unique_size')}
+                cache_dict = {k: cdata[k] for k in ('total_chunks', 'total_csize', 'total_size',
+                                                    'total_unique_chunks', 'unique_csize', 'unique_size')}
 
-            cache = Cache(**cache_dict)
-            cache.save()
+                cache = Cache(**cache_dict)
+                cache.save()
 
-            archive_dict = {k: cdata[k] for k in ('fingerprint', 'name', 'start', 'end', 'file_count',
-                                                  'original_size', 'compressed_size', 'deduplicated_size')}
+                archive_dict = {k: cdata[k] for k in ('fingerprint', 'name', 'start', 'end', 'file_count',
+                                                      'original_size', 'compressed_size', 'deduplicated_size')}
 
-            archive = Archive(**archive_dict, repo=repo, cache=cache)
-            archive.save()
-            django_cache.clear()
+                archive = Archive(**archive_dict, repo=repo, cache=cache)
+                archive.save()
+                django_cache.clear()
+            except Exception:
+                logger.exception("Archive post failed")
 
             return HttpResponseRedirect(reverse('index'))
     else:
