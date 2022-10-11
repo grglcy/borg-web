@@ -102,7 +102,7 @@ class Repo(models.Model):
     @staticmethod
     def series_csize(archives, units=None):
         return [convert_bytes(archive.cache.unique_csize, units)[0]
-                if archive is not None else None for archive in archives]
+                if archive is not None else 0 for archive in archives]
 
     def hourly_archive_string(self):
         return ''.join(['H' if archive is not None else '-' for archive in self.hourly_archives(8)])
